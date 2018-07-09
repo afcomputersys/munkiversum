@@ -2,15 +2,17 @@
 
 # Installer-Script für das ganze munkiversum
 
+# Danke an die Entwickler von munki-in-a-box und run-munki-run
+
 # Voraussetzung: macOS 10.13 Client (kein Server installiert)
 
 # Variablen
 LOGGER="/usr/bin/logger -t munkiverse"
+osvers=$(sw_vers -productVersion | awk -F. '{print $2}') # Thanks Rich Trouton
 
 
 
-
-# Anfang
+# Anfang (von munkiinabox)
 echo "Start ins MUNKIVERSUM"'!'
 echo "Sind Sie ein Benutzer mit Administratoren-Rechten? Bitte geben Sie Ihr Passwort ein."
 #Let's see if this works...
@@ -21,7 +23,7 @@ if
 	${LOGGER} "Privilege Escalation Allowed, Please Continue."
 	else
 	${LOGGER} "Privilege Escalation Denied, User Cannot Sudo."
-	exit 6 "You are not an admin user, you need to do this an admin user."
+	exit 6 "You are not an admin user, you need to do this as an admin user."
 fi
 
 
