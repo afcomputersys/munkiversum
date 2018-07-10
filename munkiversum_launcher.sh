@@ -41,10 +41,10 @@ fi
 
 
 # -------------------------------------------------------------
-# Prozeduren
+# Functions
 # -------------------------------------------------------------
 
-versionCheck() {
+fn_versionCheck() {
     # Check that we are meeting the minimum version
 		# Thanks Rich Trouton, Tom Bridge, Graham R Pugh
     if [[ $(sw_vers -productVersion | awk -F. '{print $2}') -lt $1 ]]; then
@@ -54,7 +54,7 @@ versionCheck() {
         ${LOGGER} "Mac OS X 10.$(sw_vers -productVersion | awk -F. '{print $2}') or later is installed. Proceeding..."
     fi
 }
-rootCheck() {
+fn_rootCheck() {
     # Check that the script is NOT running as root
 		# Thanks Tom Bridge, Graham R Pugh
     if [[ $EUID -eq 0 ]]; then
@@ -85,11 +85,11 @@ rootCheck() {
 
 
 # -------------------------------------------------------------
-# Einzelbestandteile ausführen
+# Execute functions and others
 # -------------------------------------------------------------
 
-versionCheck 13 # check macOS Version; at least 10.[VARIABLE1]
-rootCheck # Check that the script is NOT running as root
+fn_versionCheck 13 # check macOS Version; at least 10.[VARIABLE1]
+fn_rootCheck # Check that the script is NOT running as root
 
 
 exit 0
