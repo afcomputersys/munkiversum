@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installer-Script für das ganze munkiversum
-# Danke an die Entwickler von munki-in-a-box (Tom Bridge) und run-munki-run (Graham R Pugh)
+# Danke an die Entwickler von munki-in-a-box (Tom Bridge), run-munki-run (Graham R Pugh) und Rich Trouton
 # Voraussetzung: mindestens macOS 10.13 Client (kein Server installiert)
 
 
@@ -10,7 +10,6 @@
 # -------------------------------------------------------------
 
 APPNAME="munkiverse_launcher"
-LOGGER="/usr/bin/logger -t munkiverse"
 
 
 # -------------------------------------------------------------
@@ -28,12 +27,11 @@ trap 'fn_terminate' SIGINT
 # Functions
 # -------------------------------------------------------------
 
-fn_log() { echo "$APPNAME: $@"; /usr/bin/logger -t $APPNAME $@; }
-fn_log_ok() { echo "$APPNAME: [OK] $@"; /usr/bin/logger -t $APPNAME [OK] $@;}
-fn_log_error() { echo "$APPNAME: [ERROR] $@" 1>&2; /usr/bin/logger -p user.err -t $APPNAME $@;}
+fn_log() { echo "$APPNAME: $@"; /usr/bin/logger -t "$APPNAME" $@; }
+fn_log_ok() { echo "$APPNAME: [OK] $@"; /usr/bin/logger -t "$APPNAME" [OK] $@;}
+fn_log_error() { echo "$APPNAME: [ERROR] $@" 1>&2; /usr/bin/logger -p user.err -t "$APPNAME" $@;}
 fn_versionCheck() {
     # Check that we are meeting the minimum version
-		# Thanks Rich Trouton, Tom Bridge, Graham R Pugh
     if [[ $(sw_vers -productVersion | awk -F. '{print $2}') -lt $1 ]]; then
         fn_log_error  "Could not run because the version of the OS does not meet requirements (macOS 10.$1 required)."
         exit 2 # Not met system requirements.
@@ -43,7 +41,6 @@ fn_versionCheck() {
 }
 fn_rootCheck() {
     # Check that the script is NOT running as root
-		# Thanks Tom Bridge, Graham R Pugh
     if [[ $EUID -eq 0 ]]; then
         fn_log_error "This script is NOT MEANT to run as root. This script is meant to be run as an admin user. I'm going to quit now. Run me without the sudo, please."
         exit 3 # Running as root.
@@ -62,30 +59,45 @@ fn_adminCheck() {
 }
 fn_installCommandLineTools() {
     # Installing the Xcode command line tools
-    # Thanks Rich Trouton
-    cmd_line_tools_temp_file="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
-    # Create the placeholder file which is checked by the softwareupdate tool
-    # before allowing the installation of the Xcode command line tools.
-    touch "$cmd_line_tools_temp_file"
-    # Find the last listed update in the Software Update feed with "Command Line Tools" in the name
-    cmd_line_tools=$(softwareupdate -l | awk '/\*\ Command Line Tools/ { $1=$1;print }' | tail -1 | sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 2-)
-		#Install the command line tools
-    sudo softwareupdate -i "$cmd_line_tools" -v
-		# Remove the temp file
-    if [[ -f "$cmd_line_tools_temp_file" ]]; then
-    		rm "$cmd_line_tools_temp_file"
-    fi
-		# Check for propper installation
-		if [[ -f /Library/Developer/CommandLineTools/usr/bin/gcc ]]; then
-				fn_log_ok "Apple Command Line Tools installed"
+		if [[ -f /Library/Developer/CommandLineTools/usr/bin/git ]]; then
+				fn_log_ok "Apple Command Line Tools already installed"
 		else
-				fn_log_error "Failed to install Apple Command Line Tools"
-				exit 5 # Failed to install Apple Command Line Tools
+				cmd_line_tools_temp_file="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+    		# Create the placeholder file which is checked by the softwareupdate tool
+    		# before allowing the installation of the Xcode command line tools.
+    		touch "$cmd_line_tools_temp_file"
+    		# Find the last listed update in the Software Update feed with "Command Line Tools" in the name
+    		cmd_line_tools=$(softwareupdate -l | awk '/\*\ Command Line Tools/ { $1=$1;print }' | tail -1 | sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 2-)
+				#Install the command line tools
+  			sudo softwareupdate -i "$cmd_line_tools" -v
+				# Remove the temp file
+    		if [[ -f "$cmd_line_tools_temp_file" ]]; then
+    				rm "$cmd_line_tools_temp_file"
+  			fi
+				# Check for propper installation
+				if [[ -f /Library/Developer/CommandLineTools/usr/bin/git ]]; then
+						fn_log_ok "Apple Command Line Tools installed"
+				else
+						fn_log_error "Failed to install Apple Command Line Tools"
+						exit 5 # Failed to install Apple Command Line Tools
+				fi
 		fi
 }
-# git
 
 # munki
+fn_installMunki() {
+	# Installing latest munkitools
+	MUNKI_LATEST=$(curl https://api.github.com/repos/munki/munki/releases/latest | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["assets"][0]["browser_download_url"]')
+	curl -L "${MUNKI_LATEST}" -o "/tmp/munki-latest1.pkg"
+	sudo /usr/sbin/installer -pkg "/tmp/munki-latest1.pkg" -target "/"
+	# Check for propper installation
+	if [[ -f /usr/local/munki/munkiimport ]]; then
+			fn_log_ok "Newest munki installed"
+	else
+			fn_log_error "Failed to install munki"
+			exit 6 # Failed to install munki
+	fi
+}
 
 # MunkiAdmin
 
@@ -114,6 +126,6 @@ fn_versionCheck 13 # check macOS Version; at least 10.[VARIABLE1]
 fn_rootCheck # Check that the script is NOT running as root
 fn_adminCheck # Check that the script is running as an admin user
 
-fn_installCommandLineTools # Installs Apple Command Line Tools
+fn_installCommandLineTools # Installs Apple Command Line Tools for git
 
 exit 0
