@@ -30,8 +30,8 @@ trap 'fn_terminate' SIGINT
 # -------------------------------------------------------------
 
 fn_log() { echo "$APPNAME: $@"; /usr/bin/logger -t "$APPNAME" $@; }
-fn_log_ok() { echo "$APPNAME: [OK] $@"; /usr/bin/logger -t "$APPNAME" [OK] $@;}
-fn_log_error() { echo "$APPNAME: [ERROR] $@" 1>&2; /usr/bin/logger -p user.err -t "$APPNAME" $@;}
+fn_log_ok() { echo "$APPNAME: [OK] $@"; /usr/bin/logger -t "$APPNAME" [OK] $@; }
+fn_log_error() { echo "$APPNAME: [ERROR] $@" 1>&2; /usr/bin/logger -p user.err -t "$APPNAME" $@; }
 fn_versionCheck() {
     # Check that we are meeting the minimum version
     if [[ $(sw_vers -productVersion | awk -F. '{print $2}') -lt $1 ]]; then
@@ -87,9 +87,10 @@ fn_installCommandLineTools() {
 }
 fn_installMunki() {
 	# Installing latest munkitools
-	MUNKI_LATEST=$(curl https://api.github.com/repos/munki/munki/releases/latest | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["assets"][0]["browser_download_url"]')
-	/usr/bin/curl -L "${MUNKI_LATEST}" -o "/tmp/munki-latest1.pkg"
+	MUNKI_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/munki/munki/releases/latest | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["assets"][0]["browser_download_url"]')
+	/usr/bin/curl -s -L "${MUNKI_LATEST}" -o "/tmp/munki-latest1.pkg"
 	sudo /usr/sbin/installer -pkg "/tmp/munki-latest1.pkg" -target "/"
+  rm "/tmp/munki-latest1.pkg"
 	# Check for propper installation
 	if [[ -f /usr/local/munki/munkiimport ]]; then
 			fn_log_ok "Newest munki installed"
@@ -99,29 +100,55 @@ fn_installMunki() {
 	fi
 }
 fn_installAutoPkg() {
-    # Installing AutoPkg
-    AUTOPKG_LATEST=$(curl https://api.github.com/repos/autopkg/autopkg/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
-    /usr/bin/curl -L "${AUTOPKG_LATEST}" -o "/tmp/autopkg-latest1.pkg"
-    sudo /usr/sbin/installer -pkg "/tmp/autopkg-latest1.pkg" -target "/"
-		# Check for propper installation
-		if [[ -f /Library/AutoPkg/autopkg ]]; then
-				fn_log_ok "Newest AutoPkg installed"
-		else
-				fn_log_error "Failed to install AutoPkg"
-				exit 7 # Failed to install AutoPkg
-		fi
+  # Installing AutoPkg
+  AUTOPKG_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/autopkg/autopkg/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
+  /usr/bin/curl -s -L "${AUTOPKG_LATEST}" -o "/tmp/autopkg-latest1.pkg"
+  sudo /usr/sbin/installer -pkg "/tmp/autopkg-latest1.pkg" -target "/"
+  rm "/tmp/autopkg-latest1.pkg"
+	# Check for propper installation
+	if [[ -f /Library/AutoPkg/autopkg ]]; then
+			fn_log_ok "Newest AutoPkg installed"
+	else
+			fn_log_error "Failed to install AutoPkg"
+			exit 7 # Failed to install AutoPkg
+	fi
+}
+fn_installMunkiAdmin() {
+  # Installing MunkiAdmin
+  if [[ -d /Applications/MunkiAdmin.app ]]; then
+    sudo rm -R "/Applications/MunkiAdmin.app"
+  fi
+  MUNKIADMIN_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/hjuutilainen/munkiadmin/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
+  /usr/bin/curl -s -L "${MUNKIADMIN_LATEST}" -o "/tmp/munkiadmin-latest1.dmg"
+  hdiutil attach -quiet -mountpoint "/Volumes/MunkiAdminLatest" "/tmp/munkiadmin-latest1.dmg"
+  cp -r "/Volumes/MunkiAdminLatest/MunkiAdmin.app" "/Applications/MunkiAdmin.app"
+  hdiutil unmount -quiet "/Volumes/MunkiAdminLatest"
+  rm "/tmp/munkiadmin-latest1.dmg"
+	# Check for propper installation
+	if [[ -d /Applications/MunkiAdmin.app ]]; then
+			fn_log_ok "Newest MunkiAdmin installed"
+	else
+			fn_log_error "Failed to install MunkiAdmin"
+			exit 7 # Failed to install MunkiAdmin
+	fi
 }
 fn_createMunkiRepo() {
 	# Creates repo-folder and subfolder with correct permissions
-	mkdir -p "${REPODIR}"
-	mkdir "${REPODIR}/catalogs"
-	mkdir "${REPODIR}/manifests"
-	mkdir "${REPODIR}/pkgs"
-	mkdir "${REPODIR}/pkgsinfo"
-	mkdir "${REPODIR}/icons"
-	chmod -R a+rX,g+w "${REPODIR}"
-	chown -R $EUID:80 "${REPODIR}"
-	sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+  if [[ -f "${REPODIR}" ]]; then
+      fn_log_error "Munki Repo already exists. Aborting."
+      exit 8 # Munki Repo already exists
+  else
+      mkdir -p "${REPODIR}"
+    	mkdir "${REPODIR}/catalogs"
+    	mkdir "${REPODIR}/manifests"
+    	mkdir "${REPODIR}/pkgs"
+    	mkdir "${REPODIR}/pkgsinfo"
+    	mkdir "${REPODIR}/icons"
+	    chmod -R a+rX,g+w "${REPODIR}"
+	    chown -R $EUID:80 "${REPODIR}"
+	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+      fn_log_ok "munki repo-folder created in ${REPODIR}"
+  fi
 }
 fn_startApache() {
 	# Start Apache WebServer
@@ -155,6 +182,7 @@ fn_adminCheck # Check that the script is running as an admin user
 fn_installCommandLineTools # Installs Apple Command Line Tools for git
 fn_installMunki # Installs complete munki
 fn_installAutoPkg # Installs AutoPkg
+fn_installMunkiAdmin # Installs MunkiAdmin
 
 fn_createMunkiRepo # Creates repo-folder
 fn_startApache # Start Apache WebServer
