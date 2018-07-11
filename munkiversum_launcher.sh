@@ -10,7 +10,9 @@
 # -------------------------------------------------------------
 
 APPNAME="munkiverse_launcher"
-
+REPOLOC="/Users/Shared/munkiverse"
+REPONAME="repo"
+REPODIR="${REPOLOC}/${REPONAME}"
 
 # -------------------------------------------------------------
 # Make sure the whole script stops if Control-C is pressed.
@@ -109,6 +111,22 @@ fn_installAutoPkg() {
 				exit 7 # Failed to install AutoPkg
 		fi
 }
+fn_createMunkiRepo() {
+	# Creates repo-folder and subfolder with correct permissions
+	mkdir -p "${REPODIR}"
+	mkdir "${REPODIR}/catalogs"
+	mkdir "${REPODIR}/manifests"
+	mkdir "${REPODIR}/pkgs"
+	mkdir "${REPODIR}/pkgsinfo"
+	mkdir "${REPODIR}/icons"
+	chmod -R a+rX,g+w "${REPODIR}"
+	chown -R $EUID:80 "${REPODIR}"
+	sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+}
+fn_startApache() {
+	# Start Apache WebServer
+	sudo apachectl start
+}
 
 # MunkiAdmin
 
@@ -121,6 +139,7 @@ fn_installAutoPkg() {
 # Adobe CCP
 
 # syncoverrides.sh
+
 
 
 # -------------------------------------------------------------
@@ -136,5 +155,8 @@ fn_adminCheck # Check that the script is running as an admin user
 fn_installCommandLineTools # Installs Apple Command Line Tools for git
 fn_installMunki # Installs complete munki
 fn_installAutoPkg # Installs AutoPkg
+
+fn_createMunkiRepo # Creates repo-folder
+fn_startApache # Start Apache WebServer
 
 exit 0
