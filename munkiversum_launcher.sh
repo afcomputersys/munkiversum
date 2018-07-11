@@ -60,7 +60,29 @@ fn_adminCheck() {
 				fn_log_ok "User seems to be an admin user."
 		fi
 }
-
+fn_installCommandLineTools() {
+    # Installing the Xcode command line tools
+    # Thanks Rich Trouton
+    cmd_line_tools_temp_file="/tmp/.com.apple.dt.CommandLineTools.installondemand.in-progress"
+    # Create the placeholder file which is checked by the softwareupdate tool
+    # before allowing the installation of the Xcode command line tools.
+    touch "$cmd_line_tools_temp_file"
+    # Find the last listed update in the Software Update feed with "Command Line Tools" in the name
+    cmd_line_tools=$(softwareupdate -l | awk '/\*\ Command Line Tools/ { $1=$1;print }' | tail -1 | sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 2-)
+		#Install the command line tools
+    sudo softwareupdate -i "$cmd_line_tools" -v
+		# Remove the temp file
+    if [[ -f "$cmd_line_tools_temp_file" ]]; then
+    		rm "$cmd_line_tools_temp_file"
+    fi
+		# Check for propper installation
+		if [[ -f /Library/Developer/CommandLineTools/usr/bin/gcc ]]; then
+				fn_log_ok "Apple Command Line Tools installed"
+		else
+				fn_log_error "Failed to install Apple Command Line Tools"
+				exit 5 # Failed to install Apple Command Line Tools
+		fi
+}
 # git
 
 # munki
@@ -91,5 +113,7 @@ echo "Launch to MUNKIVERSE"'!'
 fn_versionCheck 13 # check macOS Version; at least 10.[VARIABLE1]
 fn_rootCheck # Check that the script is NOT running as root
 fn_adminCheck # Check that the script is running as an admin user
+
+fn_installCommandLineTools # Installs Apple Command Line Tools
 
 exit 0
