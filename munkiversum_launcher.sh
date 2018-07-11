@@ -4,14 +4,28 @@
 # Danke an die Entwickler von munki-in-a-box (Tom Bridge), run-munki-run (Graham R Pugh), Nate Felton und Rich Trouton
 # Voraussetzung: mindestens macOS 10.13 Client (kein Server installiert)
 
+###############################################################
+### ToDo / Ideen
+### ------------
+###
+### Separates Script oder interne Funktion (bei Scriptbeginn, mit eigenem Error; macht dann andere Schleifen überflüssig), um vorher alle munkiverse-Bestandteile (repos, overrides, etc.) zu sichern und zu deinstallieren. Dies, falls eine Migrations eines manuellen munki-Servers gemacht werden soll.
+### Setting-File mit Überprüfung 'includen'
+### Installationsweiche, falls Server.app installiert und eingerichtet ist.
+### Git-File mit MunkiReport-Modulauswahl pro Kunde
+### munkiversum-main.sh, das Unsterscripts periodisch ausführt
+### A&F-Secure-Server zur Übermittlung sensibler Passwörter?
+###############################################################
 
 # -------------------------------------------------------------
 # Variables
 # -------------------------------------------------------------
 
-APPNAME="munkiverse_launcher"
+# ZU VERSCHIEBEN IN SETTING-FILE
 REPOLOC="/Users/Shared/munkiverse"
 REPONAME="repo"
+
+# Scriptinterne Variablen
+APPNAME="munkiverse_launcher"
 REPODIR="${REPOLOC}/${REPONAME}"
 
 # -------------------------------------------------------------
@@ -19,7 +33,7 @@ REPODIR="${REPOLOC}/${REPONAME}"
 # -------------------------------------------------------------
 
 fn_terminate() {
-    echo "munkiversum_launcher has been terminated."
+    echo "munkiverse_launcher has been terminated."
     exit 1 # SIGINT caught
 }
 trap 'fn_terminate' SIGINT
@@ -155,18 +169,31 @@ fn_startApache() {
 	sudo apachectl start
 }
 
-# MunkiAdmin
+# Create own Server-Manifest,
 
-# munkireport-php
+# munkireport-php (über autopkg installieren? Munki & MunkiAdmin etc. auch? ServerinstallStart-RecipeList auf GitHub)
+
+# Watchman
+
+# Slack
 
 # Deploystudio
 
-# NetBoot
+# NetBoot alternative
 
 # Adobe CCP
 
-# syncoverrides.sh
+# Config Watchman
+# Config MunkiAdmin
+# Config MunkiReport
+# Config NetBoot
+# Config Deploystudio
+# Config Slack
 
+# Caching-Server?
+
+# syncoverrides.sh
+# trello_integration.sh
 
 
 # -------------------------------------------------------------
@@ -175,16 +202,33 @@ fn_startApache() {
 
 echo "Launch to MUNKIVERSE"'!'
 
-fn_versionCheck 13 # check macOS Version; at least 10.[VARIABLE1]
+echo "Performing Tests"
+fn_versionCheck 13 # check macOS Version; at least 10.[$1]
 fn_rootCheck # Check that the script is NOT running as root
 fn_adminCheck # Check that the script is running as an admin user
+# Tests include-Variables
+# Tests for prior Installation with cleaning and backup
+# Free Disk-Space Test
 
+echo "Installing core software for munkiverse"
 fn_installCommandLineTools # Installs Apple Command Line Tools for git
-fn_installMunki # Installs complete munki
 fn_installAutoPkg # Installs AutoPkg
-fn_installMunkiAdmin # Installs MunkiAdmin
+fn_installMunki # Installs complete munki
 
+echo "Create Init-Config"
 fn_createMunkiRepo # Creates repo-folder
 fn_startApache # Start Apache WebServer
+
+echo "Installing addional ServerTools and munkiverse-Scripts"
+fn_installMunkiAdmin # Installs MunkiAdmin
+
+echo "Configure munkiverse"
+# Alle Konfigurationen
+
+echo "The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!"
+# Slack-login
+# Trello-login
+# ?Manifest-Creator-Login?
+
 
 exit 0
