@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installer-Script für das ganze munkiversum
-# Danke an die Entwickler von munki-in-a-box (Tom Bridge), run-munki-run (Graham R Pugh) und Rich Trouton
+# Danke an die Entwickler von munki-in-a-box (Tom Bridge), run-munki-run (Graham R Pugh), Nate Felton und Rich Trouton
 # Voraussetzung: mindestens macOS 10.13 Client (kein Server installiert)
 
 
@@ -83,12 +83,10 @@ fn_installCommandLineTools() {
 				fi
 		fi
 }
-
-# munki
 fn_installMunki() {
 	# Installing latest munkitools
 	MUNKI_LATEST=$(curl https://api.github.com/repos/munki/munki/releases/latest | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["assets"][0]["browser_download_url"]')
-	curl -L "${MUNKI_LATEST}" -o "/tmp/munki-latest1.pkg"
+	/usr/bin/curl -L "${MUNKI_LATEST}" -o "/tmp/munki-latest1.pkg"
 	sudo /usr/sbin/installer -pkg "/tmp/munki-latest1.pkg" -target "/"
 	# Check for propper installation
 	if [[ -f /usr/local/munki/munkiimport ]]; then
@@ -98,12 +96,21 @@ fn_installMunki() {
 			exit 6 # Failed to install munki
 	fi
 }
+fn_installAutoPkg() {
+    # Installing AutoPkg
+    AUTOPKG_LATEST=$(curl https://api.github.com/repos/autopkg/autopkg/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
+    /usr/bin/curl -L "${AUTOPKG_LATEST}" -o "/tmp/autopkg-latest1.pkg"
+    sudo /usr/sbin/installer -pkg "/tmp/autopkg-latest1.pkg" -target "/"
+		# Check for propper installation
+		if [[ -f /Library/AutoPkg/autopkg ]]; then
+				fn_log_ok "Newest AutoPkg installed"
+		else
+				fn_log_error "Failed to install AutoPkg"
+				exit 7 # Failed to install AutoPkg
+		fi
+}
 
 # MunkiAdmin
-
-# AutoPkg
-
-# AutoPkgr
 
 # munkireport-php
 
@@ -127,5 +134,7 @@ fn_rootCheck # Check that the script is NOT running as root
 fn_adminCheck # Check that the script is running as an admin user
 
 fn_installCommandLineTools # Installs Apple Command Line Tools for git
+fn_installMunki # Installs complete munki
+fn_installAutoPkg # Installs AutoPkg
 
 exit 0
