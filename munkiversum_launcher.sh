@@ -7,13 +7,14 @@
 ###############################################################
 ### ToDo / Ideen
 ### ------------
-###
 ### Separates Script oder interne Funktion (bei Scriptbeginn, mit eigenem Error; macht dann andere Schleifen überflüssig), um vorher alle munkiverse-Bestandteile (repos, overrides, etc.) zu sichern und zu deinstallieren. Dies, falls eine Migrations eines manuellen munki-Servers gemacht werden soll.
 ### Setting-File mit Überprüfung 'includen'
 ### Installationsweiche, falls Server.app installiert und eingerichtet ist.
 ### Git-File mit MunkiReport-Modulauswahl pro Kunde
 ### munkiversum-main.sh, das Unsterscripts periodisch ausführt
 ### A&F-Secure-Server zur Übermittlung sensibler Passwörter?
+### Sicherheit. Alles möglichst verschlüsseln und https etc.
+### GOGS "Free own GitHub Server"
 ###############################################################
 
 # -------------------------------------------------------------
@@ -27,6 +28,8 @@ REPONAME="repo"
 # Scriptinterne Variablen
 APPNAME="munkiverse_launcher"
 REPODIR="${REPOLOC}/${REPONAME}"
+DEFAULTS="/usr/bin/defaults"
+AUTOPKG="/usr/local/bin/autopkg"
 
 # -------------------------------------------------------------
 # Make sure the whole script stops if Control-C is pressed.
@@ -99,6 +102,20 @@ fn_installCommandLineTools() {
 				fi
 		fi
 }
+fn_installAutoPkg() {
+  # Installing AutoPkg
+  AUTOPKG_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/autopkg/autopkg/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
+  /usr/bin/curl -s -L "${AUTOPKG_LATEST}" -o "/tmp/autopkg-latest1.pkg"
+  sudo /usr/sbin/installer -pkg "/tmp/autopkg-latest1.pkg" -target "/"
+  rm "/tmp/autopkg-latest1.pkg"
+	# Check for propper installation
+	if [[ -x /usr/local/bin/autopkg ]]; then
+			fn_log_ok "Newest AutoPkg installed"
+	else
+			fn_log_error "Failed to install AutoPkg"
+			exit 7 # Failed to install AutoPkg
+	fi
+}
 fn_installMunki() {
 	# Installing latest munkitools
 	MUNKI_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/munki/munki/releases/latest | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["assets"][0]["browser_download_url"]')
@@ -113,20 +130,58 @@ fn_installMunki() {
 			exit 6 # Failed to install munki
 	fi
 }
-fn_installAutoPkg() {
-  # Installing AutoPkg
-  AUTOPKG_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/autopkg/autopkg/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
-  /usr/bin/curl -s -L "${AUTOPKG_LATEST}" -o "/tmp/autopkg-latest1.pkg"
-  sudo /usr/sbin/installer -pkg "/tmp/autopkg-latest1.pkg" -target "/"
-  rm "/tmp/autopkg-latest1.pkg"
-	# Check for propper installation
-	if [[ -f /Library/AutoPkg/autopkg ]]; then
-			fn_log_ok "Newest AutoPkg installed"
-	else
-			fn_log_error "Failed to install AutoPkg"
-			exit 7 # Failed to install AutoPkg
-	fi
+fn_configureAutoPkg() {
+  if [[ -f "${REPOLOC}/autopkg" ]]; then
+      fn_log_error "AutoPkg folders already exists. Aborting."
+      exit 9 # AutoPkg folders already exists
+  else
+      mkdir -p "${REPOLOC}/autopkg"
+    	mkdir "${REPOLOC}/autopkg/RecipeRepos"
+    	mkdir "${REPOLOC}/autopkg/RecipeOverrides"
+    	mkdir "${REPOLOC}/autopkg/Cache"
+	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+      fn_log_ok "AutoPkg folders created in ${REPOLOC}/autopkg"
+  fi
+  # Define paths for AutoPkg
+  ${DEFAULTS} write com.github.autopkg MUNKI_REPO "$REPODIR"
+  ${DEFAULTS} write com.github.autopkg CACHE_DIR "${REPOLOC}/autopkg/Cache"
+  ${DEFAULTS} write com.github.autopkg RECIPE_OVERRIDE_DIRS "${REPOLOC}/autopkg/RecipeOverrides"
+  ${DEFAULTS} write com.github.autopkg RECIPE_REPO_DIR "${REPOLOC}/autopkg/RecipeRepos"
+  fn_log_ok "AutPkg configured"
 }
+fn_configureMunki() {
+  # Creates repo-folder and subfolder with correct permissions
+  if [[ -f "${REPODIR}" ]]; then
+      fn_log_error "Munki Repo already exists. Aborting."
+      exit 10 # Munki Repo already exists
+  else
+      mkdir -p "${REPODIR}"
+    	mkdir "${REPODIR}/catalogs"
+    	mkdir "${REPODIR}/manifests"
+    	mkdir "${REPODIR}/pkgs"
+    	mkdir "${REPODIR}/pkgsinfo"
+    	mkdir "${REPODIR}/icons"
+	    chmod -R a+rX,g+w "${REPODIR}"
+	    chown -R $EUID:80 "${REPODIR}"
+	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+      fn_log_ok "munki repo-folder created in ${REPODIR}"
+  fi
+  # Define paths and settings for munki
+  ${DEFAULTS} write com.googlecode.munki.munkiimport editor "Atom.app"
+  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_path "${REPODIR}"
+  ${DEFAULTS} write com.googlecode.munki.munkiimport pkginfo_extension .plist
+  ${DEFAULTS} write com.googlecode.munki.munkiimport default_catalog new
+  # This makes AutoPkg useful on future runs for the admin user defined at the top. It copies & creates preferences for autopkg and munki into their home dir's Library folder, as well as transfers ownership for the ~/Library/AutoPkg folders to them.
+  plutil -convert xml1 ~/Library/Preferences/com.googlecode.munki.munkiimport.plist
+  fn_log_ok "munki configured"
+}
+fn_cloneGitMunkiverse() {
+  # clone munkiverse git
+  mkdir -p "/${REPOLOC}/gitclones/munkiverse"
+  git -C "/${REPOLOC}/gitclones/munkiverse" clone https://github.com/afcomputersys/munkiversum.git
+}
+
+
 fn_installMunkiAdmin() {
   # Installing MunkiAdmin
   if [[ -d /Applications/MunkiAdmin.app ]]; then
@@ -145,24 +200,6 @@ fn_installMunkiAdmin() {
 			fn_log_error "Failed to install MunkiAdmin"
 			exit 7 # Failed to install MunkiAdmin
 	fi
-}
-fn_createMunkiRepo() {
-	# Creates repo-folder and subfolder with correct permissions
-  if [[ -f "${REPODIR}" ]]; then
-      fn_log_error "Munki Repo already exists. Aborting."
-      exit 8 # Munki Repo already exists
-  else
-      mkdir -p "${REPODIR}"
-    	mkdir "${REPODIR}/catalogs"
-    	mkdir "${REPODIR}/manifests"
-    	mkdir "${REPODIR}/pkgs"
-    	mkdir "${REPODIR}/pkgsinfo"
-    	mkdir "${REPODIR}/icons"
-	    chmod -R a+rX,g+w "${REPODIR}"
-	    chown -R $EUID:80 "${REPODIR}"
-	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
-      fn_log_ok "munki repo-folder created in ${REPODIR}"
-  fi
 }
 fn_startApache() {
 	# Start Apache WebServer
@@ -216,7 +253,8 @@ fn_installAutoPkg # Installs AutoPkg
 fn_installMunki # Installs complete munki
 
 echo "Create Init-Config"
-fn_createMunkiRepo # Creates repo-folder
+fn_configureMunki # Creates repo-folder and set paths
+fn_configureAutoPkg # Creates AutoPkg folders and set paths
 fn_startApache # Start Apache WebServer
 
 echo "Installing addional ServerTools and munkiverse-Scripts"
@@ -229,6 +267,7 @@ echo "The launch to munkiverse had no problems. So go on - here are your essenti
 # Slack-login
 # Trello-login
 # ?Manifest-Creator-Login?
+# Ansprechspersonen A&F
 
 
 exit 0
