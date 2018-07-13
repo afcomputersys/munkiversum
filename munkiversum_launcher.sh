@@ -177,10 +177,21 @@ fn_configureMunki() {
 }
 fn_cloneGitMunkiverse() {
   # clone munkiverse git
-  mkdir -p "/${REPOLOC}/gitclones/munkiverse"
-  git -C "/${REPOLOC}/gitclones/munkiverse" clone https://github.com/afcomputersys/munkiversum.git
+  mkdir -p "/${REPOLOC}/gitclones"
+  git -C "/${REPOLOC}/gitclones" clone https://github.com/afcomputersys/munkiversum.git
 }
+fn_runInitServer() {
+  # Install additional Server Tools from init-server/recipe_list.txt (git)
+  for f in "/${REPOLOC}/gitclones/munkiversum/init-server/overrides/*"
+  do
+    yes | autopkg update-trust-info $f
+  done
 
+  # overrides ausführen
+  # server-manifest erstellen und konfigurieren
+  # ServerTools installieren (mangedsoftwareupdate)
+  # repo wieder aufräumen und autopkg zurücksetzen
+}
 
 fn_installMunkiAdmin() {
   # Installing MunkiAdmin
