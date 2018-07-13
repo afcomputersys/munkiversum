@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Installer-Script für das ganze munkiversum
+# Installer-Script für das ganze munkiverse
 # Danke an die Entwickler von munki-in-a-box (Tom Bridge), run-munki-run (Graham R Pugh), Nate Felton und Rich Trouton
 # Voraussetzung: mindestens macOS 10.13 Client (kein Server installiert)
 
@@ -11,7 +11,7 @@
 ### Setting-File mit Überprüfung 'includen'
 ### Installationsweiche, falls Server.app installiert und eingerichtet ist.
 ### Git-File mit MunkiReport-Modulauswahl pro Kunde
-### munkiversum-main.sh, das Unsterscripts periodisch ausführt
+### munkiverse-main.sh, das Unsterscripts periodisch ausführt
 ### A&F-Secure-Server zur Übermittlung sensibler Passwörter?
 ### Sicherheit. Alles möglichst verschlüsseln und https etc.
 ### GOGS "Free own GitHub Server"
@@ -178,11 +178,11 @@ fn_configureMunki() {
 fn_cloneGitMunkiverse() {
   # clone munkiverse git
   mkdir -p "/${REPOLOC}/gitclones"
-  git -C "/${REPOLOC}/gitclones" clone https://github.com/afcomputersys/munkiversum.git
+  git -C "/${REPOLOC}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
 }
 fn_runInitServer() {
   # Install additional Server Tools from init-server/recipe_list.txt (git)
-  for f in "/${REPOLOC}/gitclones/munkiversum/init-server/overrides/*"
+  for f in "/${REPOLOC}/gitclones/munkiverse/init-server/overrides/*"
   do
     yes | autopkg update-trust-info $f
   done
