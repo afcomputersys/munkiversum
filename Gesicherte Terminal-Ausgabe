@@ -1,0 +1,540 @@
+Last login: Tue Aug 21 20:43:23 on console
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+munkiverse_launcher: [OK] Mac OS X 10.13 or later is installed.
+munkiverse_launcher: [OK] Script is not running as root or with sudo.
+munkiverse_launcher: [OK] User seems to be an admin user.
+Installing core software for munkiverse
+Password:
+softwareupdate: invalid option -- v
+usage: softwareupdate <cmd> [<args> ...]
+
+** Catalog Management:
+	--set-catalog <URL>	Set the new catalog URL (requires privileges)
+	--clear-catalog		Clear the catalog URL back to defaults (requires privileges)
+
+** Manage Updates:
+	-l | --list		List all appropriate update labels (options:  --no-scan, --product-types)
+	-d | --download		Download Only
+	-e | --cancel-download		Cancel a download
+	-i | --install		Install
+		<label> ...	specific updates
+		-a | --all		All appropriate updates
+		-R | --restart		Automatically restart (or shut down) if required to complete installation.
+		-r | --recommended	Only recommended updates
+	--background		Trigger a background scan and update operation
+	--ignore <label> ...	Ignore specific updates
+	--reset-ignored		Clear all ignored updates
+
+** Other Tools:
+	--suspend-background 	Suspend background operations from occurring temporarily (use --duration to specify duration to suspend in seconds)
+		--duration <duration>)		Optional duration in seconds to suspend background operations (defaults to 5*60 seconds)
+	--dump-state		Log the internal state of the SU daemon to /var/log/install.log
+	--evaluate-products	Evaluate a list of product keys specified by the --products option 
+	--history		Show the install history.  By default, only displays updates installed by softwareupdate.  
+	--all 			Include all processes in history (including App installs) 
+
+** Options:
+	--no-scan		Do not scan when listing or installing updates (use available updates previously scanned)
+	--product-types <type>		Limit a scan to a particular product type only - ignoring all others
+		Ex:  --product-types macOS  || --product-types macOS,Safari 
+	--products		A comma-separated (no spaces) list of product keys to operate on. 
+	--force			Force an operation to complete.  Use with --background to trigger a background scan regardless of "Automatically check" pref 
+
+	--verbose		Enable verbose output
+	--help			Print this help
+
+munkiverse_launcher: [ERROR] Failed to install Apple Command Line Tools
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+munkiverse_launcher: [OK] Mac OS X 10.13 or later is installed.
+munkiverse_launcher: [OK] Script is not running as root or with sudo.
+munkiverse_launcher: [OK] User seems to be an admin user.
+Installing core software for munkiverse
+Password:
+Software Update Tool
+
+
+Downloading Command Line Tools (macOS High Sierra version 10.13) for Xcode
+
+Downloaded Command Line Tools (macOS High Sierra version 10.13) for Xcode
+Installing Command Line Tools (macOS High Sierra version 10.13) for Xcode
+Done with Command Line Tools (macOS High Sierra version 10.13) for Xcode
+Done.
+munkiverse_launcher: [OK] Apple Command Line Tools installed
+Password:
+Sorry, try again.
+Password:
+installer: Package name is autopkg-latest1
+installer: Installing at base path /
+installer: The install was successful.
+munkiverse_launcher: [OK] Newest AutoPkg installed
+installer: Package name is Munki - Managed software installation for OS X
+installer: Installing at base path /
+installer: The install was successful.
+installer: The install requires restarting now.
+munkiverse_launcher: [OK] Newest munki installed
+Create Init-Config
+munkiverse_launcher: [OK] munki repo-folder created in /Users/Shared/munkiverse/repo
+munkiverse_launcher: [OK] munki configured
+ln: /Library/WebServer/Documents//repo: File exists
+munkiverse_launcher: [OK] AutoPkg folders created in /Users/Shared/munkiverse/autopkg
+munkiverse_launcher: [OK] AutPkg configured
+Installing addional ServerTools and munkiverse-Scripts
+munkiverse_launcher: [OK] Newest MunkiAdmin installed
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+Cloning into 'munkiverse'...
+remote: Counting objects: 105, done.
+remote: Compressing objects: 100% (81/81), done.
+remote: Total 105 (delta 51), reused 68 (delta 23), pack-reused 0
+Receiving objects: 100% (105/105), 39.74 KiB | 1.66 MiB/s, done.
+Resolving deltas: 100% (51/51), done.
+2018-08-21 22:00:41.465 defaults[1335:37939] Could not write domain /Library/Preferences/ManagedInstalls; exiting
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 194: manifestutil: command not found
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: manifestutil: command not found
+Didn't find a recipe for MakeCatalogs.munki.
+Search GitHub AutoPkg repos for a MakeCatalogs.munki recipe? [y/n]: whois munkiimport
+
+Nothing downloaded, packaged or imported.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+2018-08-21 22:01:32.933 defaults[1349:38196] Could not write domain /Library/Preferences/ManagedInstalls; exiting
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 194: manifestutil: command not found
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: manifestutil: command not found
+Didn't find a recipe for MakeCatalogs.munki.
+Search GitHub AutoPkg repos for a MakeCatalogs.munki recipe? [y/n]: y
+
+Name                          Repo        Path                                    
+----                          ----        ----                                    
+MakeCatalogs.munki.recipe     recipes     Munki/MakeCatalogs.munki.recipe         
+
+Add recipe repo 'recipes'? [y/n]: y
+Attempting git clone...
+
+Adding /Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.recipes to RECIPE_SEARCH_DIRS...
+Updated search path:
+  '.'
+  '~/Library/AutoPkg/Recipes'
+  '/Library/AutoPkg/Recipes'
+  '/Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.recipes'
+
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Password:
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 194: manifestutil: command not found
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: manifestutil: command not found
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Unknown catalog name: munkiverseserver.
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ /usr/local/munki/manifestutil new-manifest munkiverseserver
+munkiverseserver already exists!
+mac-mini:~ admin$ /usr/local/munki/manifestutil add-catalog munkiverseserver --manifest munkiverseserver
+Unknown catalog name: munkiverseserver.
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+MakeCatalogs.munki is not a recipe override and has no parent recipe.
+Path: /Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.recipes/Munki/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Password:
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 205: /usr/local/bin/autopkgmake-override: No such file or directory
+MakeCatalogs.munki is not a recipe override and has no parent recipe.
+Path: /Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.recipes/Munki/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+WARNING: MakeCatalogs.munki is missing trust info and FAIL_RECIPES_WITHOUT_TRUST_INFO is not set. Proceeding...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Override file saved to /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ makecatalogs
+-bash: makecatalogs: command not found
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Password:
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Password:
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: syntax error near unexpected token `echo'
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: `echo $f  '
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: syntax error near unexpected token `echo'
+/Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh: line 195: `echo "$f"  '
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+Password:
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/*
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/*
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/*
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ nano /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+mac-mini:~ admin$ sh /Users/admin/Desktop/munkiverse-master/munkiverse_launcher.sh 
+Launch to MUNKIVERSE!
+Performing Tests
+Installing core software for munkiverse
+Create Init-Config
+Installing addional ServerTools and munkiverse-Scripts
+fatal: destination path 'munkiverse' already exists and is not an empty directory.
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/MunkiAdmin.munki.recipe
+Usage: autopkg <verb> <options>, where <verb> is one of the following:
+
+    audit              (Audit one or more recipes.)
+    help               (Display this help)
+    info               (Get info about configuration or a recipe)
+    install            (Run one or more install recipes. Example: autopkg install Firefox -- equivalent to: autopkg run Firefox.install)
+    list-processors    (List available core Processors)
+    list-recipes       (List recipes available locally)
+    make-override      (Make a recipe override)
+    processor-info     (Get information about a specific processor)
+    repo-add           (Add one or more recipe repo from a URL)
+    repo-delete        (Delete a recipe repo)
+    repo-list          (List installed recipe repos)
+    repo-update        (Update one or more recipe repos)
+    run                (Run one or more recipes)
+    search             (Search for recipes on GitHub.)
+    update-trust-info  (Update or add parent recipe trust info for a recipe override.)
+    verify-trust-info  (Verify parent recipe trust info for a recipe override.)
+    version            (Print the current version of autopkg)
+
+autopkg <verb> --help for more help for that verb
+Didn't find a recipe for com.github.jleggat.MunkiAdmin.munki.
+Search GitHub AutoPkg repos for a com.github.jleggat.MunkiAdmin.munki recipe? [y/n]: y
+
+Name                           Repo                Path                                    
+----                           ----                ----                                    
+MunkiAdmin.install.recipe      jleggat-recipes     MunkiAdmin/MunkiAdmin.install.recipe    
+MunkiAdmin.munki.recipe        jleggat-recipes     MunkiAdmin/MunkiAdmin.munki.recipe      
+MunkiAdmin.download.recipe     jleggat-recipes     MunkiAdmin/MunkiAdmin.download.recipe   
+
+Add recipe repo 'jleggat-recipes'? [y/n]: y
+Attempting git clone...
+
+Adding /Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.jleggat-recipes to RECIPE_SEARCH_DIRS...
+Updated search path:
+  '.'
+  '~/Library/AutoPkg/Recipes'
+  '/Library/AutoPkg/Recipes'
+  '/Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.recipes'
+  '/Users/Shared/munkiverse/autopkg/RecipeRepos/com.github.autopkg.jleggat-recipes'
+
+Processing local.munki.MunkiAdmin...
+
+The following new items were imported into Munki:
+    Name        Version  Catalogs           Pkginfo Path                                   Pkg Repo Path                                
+    ----        -------  --------           ------------                                   -------------                                
+    MunkiAdmin  1.6.1    munkiversumserver  apps/hannesjuutilainen/MunkiAdmin-1.6.1.plist  apps/hannesjuutilainen/MunkiAdmin-1.6.1.dmg  
+
+The following new items were downloaded:
+    Download Path                                                                           
+    -------------                                                                           
+    /Users/Shared/munkiverse/autopkg/Cache/local.munki.MunkiAdmin/downloads/MunkiAdmin.dmg  
+Print: Entry, ":NAME", Does Not Exist
+Usage: add-pkg PKGNAME --manifest MANIFESTNAME [--section SECTIONNAME]
+       Adds a package to a manifest. Package is added to managed_installs
+       unless a different manifest section is specified with the
+       --section option
+
+/Users/Shared/munkiverse/gitclones/munkiverse/init-server/overrides/munkitools3.munki.recipe
+Usage: autopkg <verb> <options>, where <verb> is one of the following:
+
+    audit              (Audit one or more recipes.)
+    help               (Display this help)
+    info               (Get info about configuration or a recipe)
+    install            (Run one or more install recipes. Example: autopkg install Firefox -- equivalent to: autopkg run Firefox.install)
+    list-processors    (List available core Processors)
+    list-recipes       (List recipes available locally)
+    make-override      (Make a recipe override)
+    processor-info     (Get information about a specific processor)
+    repo-add           (Add one or more recipe repo from a URL)
+    repo-delete        (Delete a recipe repo)
+    repo-list          (List installed recipe repos)
+    repo-update        (Update one or more recipe repos)
+    run                (Run one or more recipes)
+    search             (Search for recipes on GitHub.)
+    update-trust-info  (Update or add parent recipe trust info for a recipe override.)
+    verify-trust-info  (Verify parent recipe trust info for a recipe override.)
+    version            (Print the current version of autopkg)
+
+autopkg <verb> --help for more help for that verb
+Processing local.munki.munkitools3...
+
+The following new items were imported into Munki:
+    Name                  Version     Catalogs  Pkginfo Path                                                Pkg Repo Path                                             
+    ----                  -------     --------  ------------                                                -------------                                             
+    munkitools_core       3.3.1.3537  testing   apps/themunkiproject/munkitools_core-3.3.1.3537.plist       apps/themunkiproject/munkitools_core-3.3.1.3537.pkg       
+    munkitools_admin      3.3.1.3537  testing   apps/themunkiproject/munkitools_admin-3.3.1.3537.plist      apps/themunkiproject/munkitools_admin-3.3.1.3537.pkg      
+    munkitools            4.7.3526    testing   apps/themunkiproject/munkitools-4.7.3526.plist              apps/themunkiproject/munkitools_app-4.7.3526.pkg          
+    munkitools_app_usage  3.3.1.3537  testing   apps/themunkiproject/munkitools_app_usage-3.3.1.3537.plist  apps/themunkiproject/munkitools_app_usage-3.3.1.3537.pkg  
+    munkitools_launchd    3.0.3265    testing   apps/themunkiproject/munkitools_launchd-3.0.3265.plist      apps/themunkiproject/munkitools_launchd-3.0.3265.pkg      
+
+The following new items were downloaded:
+    Download Path                                                                                       
+    -------------                                                                                       
+    /Users/Shared/munkiverse/autopkg/Cache/local.munki.munkitools3/downloads/munkitools-3.3.1.3537.pkg  
+Print: Entry, ":NAME", Does Not Exist
+Usage: add-pkg PKGNAME --manifest MANIFESTNAME [--section SECTIONNAME]
+       Adds a package to a manifest. Package is added to managed_installs
+       unless a different manifest section is specified with the
+       --section option
+
+An override plist already exists at /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe, will not overwrite it.
+Wrote updated /Users/Shared/munkiverse/autopkg/RecipeOverrides/MakeCatalogs.munki.recipe
+Processing MakeCatalogs.munki...
+
+Nothing downloaded, packaged or imported.
+munkiverseserver already exists!
+Unknown catalog name: munkiverseserver.
+Configure munkiverse
+The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!
+mac-mini:~ admin$ 
