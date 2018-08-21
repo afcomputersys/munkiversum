@@ -188,7 +188,12 @@ fn_cloneGitMunkiverse() {
 }
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
-  # Execute Overrides
+  # Config SoftwareRepoURL of local munkiverseserver
+  defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${REPONAME}"
+  # Create munkiverseserver manifest
+  manifestutil new-manifest munkiverseserver
+  manifestutil add-catalog munkiverseserver --manifest munkiverseserver
+  # Execute Overrides and add to munkiverseserver manifest
   for f in "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   do
     if [[ "$f" == *"recipe"* ]]
@@ -196,14 +201,14 @@ fn_runInitServer() {
       yes | ${AUTOPKG} --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
+      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Name" $f)
+      manifestutil add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
   ${AUTOPKG} run "MakeCatalogs.munki"
 
-  # overrides ausführen
-  # server-manifest erstellen und konfigurieren
+
   # ServerTools installieren (mangedsoftwareupdate)
-  # repo wieder aufräumen und autopkg zurücksetzen
 }
 
 fn_installMunkiAdmin() {
