@@ -201,12 +201,12 @@ fn_runInitServer() {
       yes | ${AUTOPKG} --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
-      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Name" $f)
+      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :NAME" $f)
       manifestutil add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
   ${AUTOPKG} run "MakeCatalogs.munki"
-
+  # Manifest munkiverseserver ausführen
 
   # ServerTools installieren (mangedsoftwareupdate)
 }
