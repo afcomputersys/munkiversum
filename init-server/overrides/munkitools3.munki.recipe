@@ -47,7 +47,7 @@
 		<key>MUNKI_ICON</key>
 		<string></string>
 		<key>MUNKI_REPO_SUBDIR</key>
-		<string>munkitools</string>
+		<string>apps/themunkiproject</string>
 		<key>NAME</key>
 		<string>munkitools3</string>
 	</dict>
