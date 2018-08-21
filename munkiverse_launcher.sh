@@ -17,17 +17,23 @@
 ### GOGS "Free own GitHub Server"
 ###############################################################
 
+# andere Log-Variante
+#
+# log_file="/var/log/Munki_PostInstall.log"
+# exec >> $log_file 2>&1
+
+
 # -------------------------------------------------------------
 # Variables
 # -------------------------------------------------------------
 
 # ZU VERSCHIEBEN IN SETTING-FILE
-REPOLOC="/Users/Shared/munkiverse"
+MUNKIVERSELOCATION="/Users/Shared/munkiverse"
 REPONAME="repo"
 
 # Scriptinterne Variablen
 APPNAME="munkiverse_launcher"
-REPODIR="${REPOLOC}/${REPONAME}"
+REPODIR="${MUNKIVERSELOCATION}/${REPONAME}"
 DEFAULTS="/usr/bin/defaults"
 AUTOPKG="/usr/local/bin/autopkg"
 
@@ -131,22 +137,22 @@ fn_installMunki() {
 	fi
 }
 fn_configureAutoPkg() {
-  if [[ -f "${REPOLOC}/autopkg" ]]; then
+  if [[ -f "${MUNKIVERSELOCATION}/autopkg" ]]; then
       fn_log_error "AutoPkg folders already exists. Aborting."
       exit 9 # AutoPkg folders already exists
   else
-      mkdir -p "${REPOLOC}/autopkg"
-    	mkdir "${REPOLOC}/autopkg/RecipeRepos"
-    	mkdir "${REPOLOC}/autopkg/RecipeOverrides"
-    	mkdir "${REPOLOC}/autopkg/Cache"
+      mkdir -p "${MUNKIVERSELOCATION}/autopkg"
+    	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeRepos"
+    	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeOverrides"
+    	mkdir "${MUNKIVERSELOCATION}/autopkg/Cache"
 	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
-      fn_log_ok "AutoPkg folders created in ${REPOLOC}/autopkg"
+      fn_log_ok "AutoPkg folders created in ${MUNKIVERSELOCATION}/autopkg"
   fi
   # Define paths for AutoPkg
   ${DEFAULTS} write com.github.autopkg MUNKI_REPO "$REPODIR"
-  ${DEFAULTS} write com.github.autopkg CACHE_DIR "${REPOLOC}/autopkg/Cache"
-  ${DEFAULTS} write com.github.autopkg RECIPE_OVERRIDE_DIRS "${REPOLOC}/autopkg/RecipeOverrides"
-  ${DEFAULTS} write com.github.autopkg RECIPE_REPO_DIR "${REPOLOC}/autopkg/RecipeRepos"
+  ${DEFAULTS} write com.github.autopkg CACHE_DIR "${MUNKIVERSELOCATION}/autopkg/Cache"
+  ${DEFAULTS} write com.github.autopkg RECIPE_OVERRIDE_DIRS "${MUNKIVERSELOCATION}/autopkg/RecipeOverrides"
+  ${DEFAULTS} write com.github.autopkg RECIPE_REPO_DIR "${MUNKIVERSELOCATION}/autopkg/RecipeRepos"
   fn_log_ok "AutPkg configured"
 }
 fn_configureMunki() {
@@ -177,14 +183,14 @@ fn_configureMunki() {
 }
 fn_cloneGitMunkiverse() {
   # clone munkiverse git
-  mkdir -p "/${REPOLOC}/gitclones"
-  git -C "/${REPOLOC}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
+  mkdir -p "/${MUNKIVERSELOCATION}/gitclones"
+  git -C "/${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
 }
 fn_runInitServer() {
   # Install additional Server Tools from init-server/recipe_list.txt (git)
-  for f in "/${REPOLOC}/gitclones/munkiverse/init-server/overrides/*"
+  for f in "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   do
-    yes | autopkg update-trust-info $f
+    yes | ${AUTOPKG} update-trust-info $f
   done
 
   # overrides ausführen
