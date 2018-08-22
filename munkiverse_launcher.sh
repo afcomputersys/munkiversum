@@ -229,15 +229,16 @@ fn_runInitServer() {
   # Create munkiverseserver manifest
   ${MANIFESTUTIL} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
-  MUNKIVERSESERVEROVERRIDES=${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides/*
+  MUNKIVERSESERVEROVERRIDES=${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*
   for f in "${MUNKIVERSESERVEROVERRIDES}"
   do
 echo ${f}
+echo $f
     if [[ "$f" == *"recipe"* ]]
     then
-      yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides" update-trust-info $f
+      yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
-      ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides" ${RECIPEIDENTIFIER}
+      ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
       ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
