@@ -175,7 +175,7 @@ fn_configureMunki() {
     	mkdir "${REPODIR}/icons"
 	    chmod -R a+rX,g+w "${REPODIR}"
 	    chown -R $EUID:80 "${REPODIR}"
-	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
+	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents
       fn_log_ok "munki repo-folder created in ${REPODIR}"
   fi
   # Define paths and settings for munki
@@ -206,7 +206,7 @@ fn_configureMunkiverseserverRepo() {
     	mkdir "${MUNKIVERSESERVERREPODIR}/icons"
 	    chmod -R a+rX,g+w "${MUNKIVERSESERVERREPODIR}"
 	    chown -R $EUID:80 "${MUNKIVERSESERVERREPODIR}"
-	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents/
+	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents
       fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}"
   fi
 }
@@ -217,7 +217,7 @@ fn_startApache() {
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
   # Config SoftwareRepoURL of local munkiverseserver
-  defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKEVERSESERVERREPONAME}"
+  sudo defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKEVERSESERVERREPONAME}"
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
