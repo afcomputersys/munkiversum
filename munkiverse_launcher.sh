@@ -254,6 +254,7 @@ fn_runInitServer() {
 
   # Manifest munkiverseserver ausführen
   sudo ${MANAGEDSOFTWAREUPDATE} -v
+  sudo ${MANAGEDSOFTWAREUPDATE} -v --installonly
   # ServerTools installieren (mangedsoftwareupdate)
 }
 
