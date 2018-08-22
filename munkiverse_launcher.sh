@@ -223,17 +223,18 @@ fn_runInitServer() {
   sudo defaults write /Library/Preferences/ManagedInstalls ClientIdentifier "munkiverseserver"
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
-  # Create munkiverseserver manifest
-  ${MANIFESTUTIL} new-manifest munkiverseserver
-  # Execute Overrides and add to munkiverseserver manifest
 
   ${DEFAULTS} write com.googlecode.munki.munkiimport repo_url "file://${MUNKIVERSESERVERREPODIR}" # TEMP
 
+  # Create munkiverseserver manifest
+  ${MANIFESTUTIL} new-manifest munkiverseserver
+  # Execute Overrides and add to munkiverseserver manifest
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
   do
     if [[ "$f" == *"recipe"* ]]
     then
+echo ${f}
       yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
