@@ -94,7 +94,7 @@ fn_installCommandLineTools() {
     		# Find the last listed update in the Software Update feed with "Command Line Tools" in the name
     		cmd_line_tools=$(softwareupdate -l | awk '/\*\ Command Line Tools/ { $1=$1;print }' | tail -1 | sed 's/^[[ \t]]*//;s/[[ \t]]*$//;s/*//' | cut -c 2-)
 				#Install the command line tools
-  			sudo softwareupdate -i "$cmd_line_tools" -v
+  			sudo softwareupdate -i "$cmd_line_tools"
 				# Remove the temp file
     		if [[ -f "$cmd_line_tools_temp_file" ]]; then
     				rm "$cmd_line_tools_temp_file"
