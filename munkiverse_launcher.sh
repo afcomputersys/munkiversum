@@ -229,17 +229,17 @@ fn_runInitServer() {
   # Create munkiverseserver manifest
   ${MANIFESTUTIL} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
-  MUNKIVERSESERVEROVERRIDES=${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*
-  for f in "${MUNKIVERSESERVEROVERRIDES}"
+  MUNKIVERSESERVEROVERRIDES="$MUNKIVERSELOCATION/gitclones/munkiverse/init-server/overrides/*"
+  for f in $MUNKIVERSESERVEROVERRIDES
   do
 echo ${f}
-    if [[ ${f} == *"recipe"* ]]
+    if [[ "$f" == *"recipe"* ]]
     then
 echo ${f}"____if"
       yes | ${AUTOPKG} update-trust-info --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" $f
-      RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" ${f})
+      RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
-      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" ${f})
+      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
       ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
@@ -256,25 +256,7 @@ echo ${f}"____if"
   # ServerTools installieren (mangedsoftwareupdate)
 }
 
-fn_installMunkiAdmin() {
-  # Installing MunkiAdmin
-  if [[ -d /Applications/MunkiAdmin.app ]]; then
-    sudo rm -R "/Applications/MunkiAdmin.app"
-  fi
-  MUNKIADMIN_LATEST=$(/usr/bin/curl -s https://api.github.com/repos/hjuutilainen/munkiadmin/releases | python -c 'import json,sys;obj=json.load(sys.stdin);print obj[0]["assets"][0]["browser_download_url"]')
-  /usr/bin/curl -s -L "${MUNKIADMIN_LATEST}" -o "/tmp/munkiadmin-latest1.dmg"
-  hdiutil attach -quiet -mountpoint "/Volumes/MunkiAdminLatest" "/tmp/munkiadmin-latest1.dmg"
-  cp -r "/Volumes/MunkiAdminLatest/MunkiAdmin.app" "/Applications/MunkiAdmin.app"
-  hdiutil unmount -quiet "/Volumes/MunkiAdminLatest"
-  rm "/tmp/munkiadmin-latest1.dmg"
-	# Check for propper installation
-	if [[ -d /Applications/MunkiAdmin.app ]]; then
-			fn_log_ok "Newest MunkiAdmin installed"
-	else
-			fn_log_error "Failed to install MunkiAdmin"
-			exit 7 # Failed to install MunkiAdmin
-	fi
-}
+
 
 
 # Create own Server-Manifest,
@@ -332,7 +314,6 @@ fn_startApache # Start Apache WebServer
 
 echo "Installing additional ServerTools and munkiverseserver-repo"
 fn_runInitServer
-# fn_installMunkiAdmin
 
 echo "Configure munkiverse"
 # Alle Konfigurationen
