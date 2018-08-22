@@ -222,7 +222,7 @@ fn_runInitServer() {
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
-  ${MANIFESTUTIL} -k repo_url=file://${MUNKIVERSESERVERREPODIR} new-manifest munkiverseserver
+  ${MANIFESTUTIL} --repo_url=file://${MUNKIVERSESERVERREPODIR} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
@@ -233,13 +233,13 @@ fn_runInitServer() {
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
-      ${MANIFESTUTIL} -k repo_path="${MUNKIVERSESERVERREPODIR}" add-pkg ${PKGNAME} --manifest munkiverseserver
+      ${MANIFESTUTIL} --repo_url=file://${MUNKIVERSESERVERREPODIR} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
 #  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
 #  ${AUTOPKG} run "MakeCatalogs.munki"
   ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
-${MAKECATALOGS} --repo_url=${MUNKIVERSESERVERREPODIR}
+${MAKECATALOGS} --repo_url=file://${MUNKIVERSESERVERREPODIR}
   # Manifest munkiverseserver ausführen
 
   # ServerTools installieren (mangedsoftwareupdate)
