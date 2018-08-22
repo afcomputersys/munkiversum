@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.CarbonCopyCloner</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/bombich/Carbon Copy Cloner</string>
+		<key>NAME</key>
+		<string>CarbonCopyCloner</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>munkiverseserver</string>
+			</array>
+			<key>description</key>
+			<string>Carbon Copy Cloner (CCC) dient zum Kopieren von/auf Volumes bzw. in ein Disk-Image. Im Gegensatz zum Kopieren mit dem Finder werden die Rechte auf dem Zielvolume identisch zum Quellvolume gesetzt. So kann eine bootfähige Kopie erstellt werden, was besonders beim Umzug eines Systems auf einen anderen Rechner nützlich ist.&lt;br&gt;&lt;br&gt;
+					&lt;img width="400" src="https://bombich.com/sites/all/themes/bomb/img/front-page-features/local-or-network-disks.png"&gt; </string>
+			<key>display_name</key>
+			<string>Carbon Copy Cloner</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+			<key>category</key>
+			<string>Tools</string>
+			<key>unattended_install</key>
+			<true/>
+			<key>uninstallable</key>
+			<true/>
+			<key>unattended_uninstall</key>
+			<true/>
+			<key>icon_name</key>
+			<string>ccc.png</string>
+			<key>developer</key>
+			<string>Bombich</string>
+			<key>RestartAction</key>
+			<string>None</string>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.keeleysam.recipes.CarbonCopyCloner.munki</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict>
+			<key>CarbonCopyClonerURLProvider</key>
+			<dict>
+				<key>git_hash</key>
+				<string>2ff1e1e57747ecbccc47e18b270a721a1911abe3</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.keeleysam-recipes/CarbonCopyCloner/CarbonCopyClonerURLProvider.py</string>
+				<key>sha256_hash</key>
+				<string>aada0c37a68c12eb3a810e25db905e0bd9efefe5726ccff4c6ae1dfbc4270007</string>
+			</dict>
+		</dict>
+		<key>parent_recipes</key>
+		<dict>
+			<key>com.github.keeleysam.recipes.CarbonCopyCloner.download</key>
+			<dict>
+				<key>git_hash</key>
+				<string>4b3d6d25283d58c26a4585ed55a7cc2e67d4648f</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.keeleysam-recipes/CarbonCopyCloner/CarbonCopyCloner.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>a115dca316dca676c0f9db33d98aed832169e947f31f00e59d7c249524832ddb</string>
+			</dict>
+			<key>com.github.keeleysam.recipes.CarbonCopyCloner.munki</key>
+			<dict>
+				<key>git_hash</key>
+				<string>bd68c2f451bb7d088705102a1a0fddc543c48f37</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.keeleysam-recipes/CarbonCopyCloner/CarbonCopyCloner.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>758d5ff027094a1177bdc8f110b5df0963ed5762d6b31580923ece8b47cfc04e</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>

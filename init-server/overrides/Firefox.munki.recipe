@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.Firefox</string>
+	<key>Input</key>
+	<dict>
+		<key>DISABLE_CODE_SIGNATURE_VERIFICATION</key>
+		<false/>
+		<key>LOCALE</key>
+		<string>de</string>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>apps/Mozilla/firefox</string>
+		<key>NAME</key>
+		<string>Firefox</string>
+		<key>RELEASE</key>
+		<string>latest</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>munkiverseserver</string>
+			</array>
+			<key>description</key>
+			<string>Mozilla Firefox ist weltweit einer der erfolgreichsten Internet-Browser und dominiert zusammen mit Google Chrome den Markt. Um die Performance eines 64-Bit-Systems mit zusätzlichem RAM auszunutzen, gibt es den Browser auch in einer 64-Bit-Variante, die das 32-Bit-Pendant in der Regel bei Benchmarks hinter sich lässt. Das Open-Source-Programm verdankt seinen Erfolg unter anderem dem Sicherheitskonzept mit Cookie- und Rechte-Management, dem Surfen ohne Spuren zu hinterlassen und dem integrierten Malwareschutz. Positiv ist auch das gute Handling sowie zahlreiche Zusatzfeatures, etwa der integrierte PDF-Viewer, ein Screenshot-Programm, das Synchronisieren Ihrer Favoriten und Passwörter mit Laptop, iPad, iPhone und Co. sowie die Unterstützung aktueller Webstandards wie HTML5 und CSS3. Selbst 360-Grad-Videos können Sie sich mit Ihrem VR-Headset ohne zusätzlichen Player anschauen.&lt;br&gt;&lt;br&gt;
+					&lt;img width="400" src="https://www.mozilla.org/media/img/firefox/new/browser-high-res.7f2940951d65.png"&gt;</string>
+			<key>display_name</key>
+			<string>Mozilla Firefox</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+			<key>unattended_uninstall</key>
+			<true/>
+			<key>uninstallable</key>
+			<true/>
+			<key>icon_name</key>
+			<string>firefox.png</string>
+			<key>RestartAction</key>
+			<string>None</string>
+			<key>category</key>
+			<string>Webbrowser</string>
+			<key>developer</key>
+			<string>Mozilla</string>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.munki.firefox-rc-en_US</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict>
+			<key>MozillaURLProvider</key>
+			<dict>
+				<key>git_hash</key>
+				<string>83628dadcfbe7726c7b4fca960eef9d713384c9c</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Mozilla/MozillaURLProvider.py</string>
+				<key>sha256_hash</key>
+				<string>3faa6a09292c3a8e1f2fd62c15704d448c62703020674981432ab3d53851a8df</string>
+			</dict>
+		</dict>
+		<key>parent_recipes</key>
+		<dict>
+			<key>com.github.autopkg.download.firefox-rc-en_US</key>
+			<dict>
+				<key>git_hash</key>
+				<string>192a4b85749fd12fdcc837bb5caa124d487b2538</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Mozilla/Firefox.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>8d1429a6bda5be11cc69eccf1c7f1b6044ecb068f8f3de4a87e359e855f2a05d</string>
+			</dict>
+			<key>com.github.autopkg.munki.firefox-rc-en_US</key>
+			<dict>
+				<key>git_hash</key>
+				<string>8332edca4fbafc1e8aff8c119e571f27b4853bb5</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Mozilla/Firefox.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>ca589a917fa5251ad39071dd49b168ed9c6549f4b085e706ea541829c3ec426d</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
