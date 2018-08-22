@@ -235,11 +235,11 @@ fn_runInitServer() {
 echo ${f}
     if [[ ${f} == *"recipe"* ]]
     then
-echo "${f}____if"
-      yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
-      RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
+echo ${f}"____if"
+      yes | ${AUTOPKG} update-trust-info --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" $f
+      RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" ${f})
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
-      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
+      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" ${f})
       ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
