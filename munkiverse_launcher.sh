@@ -35,8 +35,8 @@ REPONAME="repo"
 # Scriptinterne Variablen
 APPNAME="munkiverse_launcher"
 REPODIR="${MUNKIVERSELOCATION}/${REPONAME}"
-MUNKEVERSESERVERREPONAME="repo_munkiverseserver"
-MUNKIVERSESERVERREPODIR="${MUNKIVERSELOCATION}/${MUNKEVERSESERVERREPONAME}"
+MUNKIVERSESERVERREPONAME="repo_munkiverseserver"
+MUNKIVERSESERVERREPODIR="${MUNKIVERSELOCATION}/${MUNKIVERSESERVERREPONAME}"
 DEFAULTS="/usr/bin/defaults"
 AUTOPKG="/usr/local/bin/autopkg"
 MANIFESTUTIL="/usr/local/munki/manifestutil"
@@ -159,7 +159,7 @@ fn_configureAutoPkg() {
   ${DEFAULTS} write com.github.autopkg CACHE_DIR "${MUNKIVERSELOCATION}/autopkg/Cache"
   ${DEFAULTS} write com.github.autopkg RECIPE_OVERRIDE_DIRS "${MUNKIVERSELOCATION}/autopkg/RecipeOverrides"
   ${DEFAULTS} write com.github.autopkg RECIPE_REPO_DIR "${MUNKIVERSELOCATION}/autopkg/RecipeRepos"
-  fn_log_ok "AutPkg configured"
+  fn_log_ok "AutoPkg configured"
 }
 fn_configureMunki() {
   # Creates repo-folder and subfolder with correct permissions
@@ -175,7 +175,7 @@ fn_configureMunki() {
     	mkdir "${REPODIR}/icons"
 	    chmod -R a+rX,g+w "${REPODIR}"
 	    chown -R $EUID:80 "${REPODIR}"
-	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents
+	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
       fn_log_ok "munki repo-folder created in ${REPODIR}"
   fi
   # Define paths and settings for munki
@@ -206,7 +206,7 @@ fn_configureMunkiverseserverRepo() {
     	mkdir "${MUNKIVERSESERVERREPODIR}/icons"
 	    chmod -R a+rX,g+w "${MUNKIVERSESERVERREPODIR}"
 	    chown -R $EUID:80 "${MUNKIVERSESERVERREPODIR}"
-	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents
+	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents/
       fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}"
   fi
 }
@@ -217,7 +217,7 @@ fn_startApache() {
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
   # Config SoftwareRepoURL of local munkiverseserver
-  sudo defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKEVERSESERVERREPONAME}"
+  sudo defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKIVERSESERVERREPONAME}"
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
