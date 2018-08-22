@@ -145,7 +145,7 @@ fn_installMunki() {
 	fi
 }
 fn_configureAutoPkg() {
-  if [[ -f "${MUNKIVERSELOCATION}/autopkg" ]]; then
+  if [[ -d "${MUNKIVERSELOCATION}/autopkg" ]]; then
       fn_log_error "AutoPkg folders already exists. Aborting."
       exit 9 # AutoPkg folders already exists
   else
@@ -165,7 +165,7 @@ fn_configureAutoPkg() {
 }
 fn_configureMunki() {
   # Creates repo-folder and subfolder with correct permissions
-  if [[ -f "${REPODIR}" ]]; then
+  if [[ -d "${REPODIR}" ]]; then
       fn_log_error "Munki Repo already exists. Aborting."
       exit 10 # Munki Repo already exists
   else
@@ -197,7 +197,7 @@ fn_cloneGitMunkiverse() {
 }
 fn_configureMunkiverseserverRepo() {
   # Creates repo-folder and subfolder with correct permissions
-  if [[ -f "${MUNKIVERSESERVERREPODIR}" ]]; then
+  if [[ -d "${MUNKIVERSESERVERREPODIR}" ]]; then
       fn_log_error "Munkiverseserver Repo already exists. Aborting."
       exit 11 # Munkiverseserver Repo already exists
   else
