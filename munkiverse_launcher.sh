@@ -42,6 +42,7 @@ AUTOPKG="/usr/local/bin/autopkg"
 MANIFESTUTIL="/usr/local/munki/manifestutil"
 MAKECATALOGS="/usr/local/munki/makecatalogs"
 MUNKIIMPORT="/usr/local/munki/munkiimport"
+MANAGEDSOFTWAREUPDATE="/usr/local/munki/managedsoftwareupdate"
 
 
 # -------------------------------------------------------------
@@ -219,11 +220,15 @@ fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
   # Config SoftwareRepoURL of local munkiverseserver
   sudo defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKIVERSESERVERREPONAME}"
+  sudo defaults write /Library/Preferences/ManagedInstalls ClientIdentifier "munkiverseserver"
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
-  ${MANIFESTUTIL} --repo_url=file://${MUNKIVERSESERVERREPODIR} new-manifest munkiverseserver
+  ${MANIFESTUTIL} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
+
+  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_url "file://${MUNKIVERSESERVERREPODIR}" # TEMP
+
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
   do
@@ -233,15 +238,19 @@ fn_runInitServer() {
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
-      ${MANIFESTUTIL} --repo_url=file://${MUNKIVERSESERVERREPODIR} add-pkg ${PKGNAME} --manifest munkiverseserver
+      ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
 #  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
 #  ${AUTOPKG} run "MakeCatalogs.munki"
+  ${MAKECATALOGS} --repo_url=file://${MUNKIVERSESERVERREPODIR}
   ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
-${MAKECATALOGS} --repo_url=file://${MUNKIVERSESERVERREPODIR}
-  # Manifest munkiverseserver ausführen
 
+  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_url "file://${REPODIR}" # TEMP
+
+
+  # Manifest munkiverseserver ausführen
+  ${MANAGEDSOFTWAREUPDATE} -v
   # ServerTools installieren (mangedsoftwareupdate)
 }
 
@@ -308,9 +317,9 @@ fn_adminCheck # Check that the script is running as an admin user
 # Free Disk-Space Test
 
 echo "Installing core software for munkiverse"
-fn_installCommandLineTools # Installs Apple Command Line Tools for git
-fn_installAutoPkg # Installs AutoPkg
-fn_installMunki # Installs complete munki
+# fn_installCommandLineTools # Installs Apple Command Line Tools for git
+# fn_installAutoPkg # Installs AutoPkg
+# fn_installMunki # Installs complete munki
 
 echo "Create Init-Config"
 fn_configureMunki # Creates repo-folder and set paths
