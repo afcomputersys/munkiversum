@@ -153,6 +153,7 @@ fn_configureAutoPkg() {
     	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeRepos"
     	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeOverrides"
     	mkdir "${MUNKIVERSELOCATION}/autopkg/Cache"
+      #mkdir -p "${MUNKIVERSELOCATION}/autopkg/{RecipeRepos,RecipeOverrides,Cache}"
       fn_log_ok "AutoPkg folders created in ${MUNKIVERSELOCATION}/autopkg"
   fi
   # Define paths for AutoPkg
