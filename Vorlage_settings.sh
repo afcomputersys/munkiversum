@@ -125,4 +125,4 @@ LOGIN_REDIRECT_URL="/pkgs"
 # Munki-Do timezone is 'Europe/Zurich' by default, but you can change to whatever you
 # wish using the codes listed at http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE='Europe/Zurich'
-MHO_added_second
+MHO_added_second_THIRD
