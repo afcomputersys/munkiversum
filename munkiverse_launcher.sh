@@ -34,6 +34,8 @@ REPONAME="repo"
 # Scriptinterne Variablen
 APPNAME="munkiverse_launcher"
 REPODIR="${MUNKIVERSELOCATION}/${REPONAME}"
+MUNKEVERSESERVERREPONAME="repo_munkiverseserver"
+MUNKIVERSESERVERREPODIR="${MUNKIVERSELOCATION}/${MUNKEVERSESERVERREPONAME}"
 DEFAULTS="/usr/bin/defaults"
 AUTOPKG="/usr/local/bin/autopkg"
 
@@ -183,8 +185,34 @@ fn_configureMunki() {
 }
 fn_cloneGitMunkiverse() {
   # clone munkiverse git
-  mkdir -p "/${MUNKIVERSELOCATION}/gitclones"
-  git -C "/${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
+  mkdir -p "${MUNKIVERSELOCATION}/gitclones"
+  git -C "${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
+}
+fn_configureMunkiverseserverRepo() {
+  # Creates repo-folder and subfolder with correct permissions
+  if [[ -f "${MUNKIVERSESERVERREPODIR}" ]]; then
+      fn_log_error "Munki Repo already exists. Aborting."
+      exit 10 # Munki Repo already exists
+  else
+      mkdir -p "${MUNKIVERSESERVERREPODIR}"
+    	mkdir "${MUNKIVERSESERVERREPODIR}/catalogs"
+    	mkdir "${MUNKIVERSESERVERREPODIR}/manifests"
+    	mkdir "${MUNKIVERSESERVERREPODIR}/pkgs"
+    	mkdir "${MUNKIVERSESERVERREPODIR}/pkgsinfo"
+    	mkdir "${MUNKIVERSESERVERREPODIR}/icons"
+	    chmod -R a+rX,g+w "${MUNKIVERSESERVERREPODIR}"
+	    chown -R $EUID:80 "${MUNKIVERSESERVERREPODIR}"
+	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents/
+      fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}"
+  fi
+  # Define paths and settings for munki
+  ${DEFAULTS} write com.googlecode.munki.munkiimport editor "Atom.app"
+  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_path "${REPODIR}"
+  ${DEFAULTS} write com.googlecode.munki.munkiimport pkginfo_extension .plist
+  ${DEFAULTS} write com.googlecode.munki.munkiimport default_catalog new
+  # This makes AutoPkg useful on future runs for the admin user defined at the top. It copies & creates preferences for autopkg and munki into their home dir's Library folder, as well as transfers ownership for the ~/Library/AutoPkg folders to them.
+  plutil -convert xml1 ~/Library/Preferences/com.googlecode.munki.munkiimport.plist
+  fn_log_ok "munki configured"
 }
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
@@ -194,17 +222,19 @@ fn_runInitServer() {
   manifestutil new-manifest munkiverseserver
   manifestutil add-catalog munkiverseserver --manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
-  for f in "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
+  MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
+  for f in "${MUNKIVERSESERVEROVERRIDES}"
   do
     if [[ "$f" == *"recipe"* ]]
     then
-      yes | ${AUTOPKG} --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
+      yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
-      ${AUTOPKG} run --override-dir "/${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
-      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :NAME" $f)
+      ${AUTOPKG} run --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
+      PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
       manifestutil add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
+  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
   ${AUTOPKG} run "MakeCatalogs.munki"
   # Manifest munkiverseserver ausführen
 
@@ -286,8 +316,9 @@ fn_configureMunki # Creates repo-folder and set paths
 fn_configureAutoPkg # Creates AutoPkg folders and set paths
 fn_startApache # Start Apache WebServer
 
-echo "Installing addional ServerTools and munkiverse-Scripts"
-fn_installMunkiAdmin # Installs MunkiAdmin
+echo "Installing additional ServerTools and munkiverseserver-repo"
+fn_runInitServer
+# fn_installMunkiAdmin
 
 echo "Configure munkiverse"
 # Alle Konfigurationen
