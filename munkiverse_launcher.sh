@@ -229,12 +229,12 @@ fn_runInitServer() {
   # Create munkiverseserver manifest
   ${MANIFESTUTIL} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
-  MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides/*"
+  MUNKIVERSESERVEROVERRIDES=${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides/*
   for f in "${MUNKIVERSESERVEROVERRIDES}"
   do
+echo ${f}
     if [[ "$f" == *"recipe"* ]]
     then
-echo ${f}
       yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse-master/init-server/overrides" ${RECIPEIDENTIFIER}
@@ -325,6 +325,7 @@ echo "Installing core software for munkiverse"
 echo "Create Init-Config"
 fn_configureMunki # Creates repo-folder and set paths
 fn_configureAutoPkg # Creates AutoPkg folders and set paths
+fn_cloneGitMunkiverse
 fn_configureMunkiverseserverRepo
 fn_startApache # Start Apache WebServer
 
