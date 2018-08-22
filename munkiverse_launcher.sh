@@ -181,6 +181,7 @@ fn_configureMunki() {
   # Define paths and settings for munki
   ${DEFAULTS} write com.googlecode.munki.munkiimport editor "Atom.app"
   ${DEFAULTS} write com.googlecode.munki.munkiimport repo_path "${REPODIR}"
+  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_url "file://${REPODIR}"
   ${DEFAULTS} write com.googlecode.munki.munkiimport pkginfo_extension .plist
   ${DEFAULTS} write com.googlecode.munki.munkiimport default_catalog new
   # This makes AutoPkg useful on future runs for the admin user defined at the top. It copies & creates preferences for autopkg and munki into their home dir's Library folder, as well as transfers ownership for the ~/Library/AutoPkg folders to them.
@@ -221,7 +222,7 @@ fn_runInitServer() {
   # Add Repo autopkg/recipes because of MakeCatalogs.munki
   ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
-  ${MANIFESTUTIL} new-manifest munkiverseserver
+  ${MANIFESTUTIL} -k repo_url=file://${MUNKIVERSESERVERREPODIR} new-manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
