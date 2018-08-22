@@ -152,7 +152,6 @@ fn_configureAutoPkg() {
     	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeRepos"
     	mkdir "${MUNKIVERSELOCATION}/autopkg/RecipeOverrides"
     	mkdir "${MUNKIVERSELOCATION}/autopkg/Cache"
-	    sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
       fn_log_ok "AutoPkg folders created in ${MUNKIVERSELOCATION}/autopkg"
   fi
   # Define paths for AutoPkg
@@ -211,13 +210,18 @@ fn_configureMunkiverseserverRepo() {
       fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}"
   fi
 }
+fn_startApache() {
+	# Start Apache WebServer
+	sudo apachectl start
+}
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
   # Config SoftwareRepoURL of local munkiverseserver
-  defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${REPONAME}"
+  defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${MUNKEVERSESERVERREPONAME}"
+  # Add Repo autopkg/recipes because of MakeCatalogs.munki
+  ${AUTOPKG} repo-add recipes
   # Create munkiverseserver manifest
   ${MANIFESTUTIL} new-manifest munkiverseserver
-  ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
@@ -226,14 +230,15 @@ fn_runInitServer() {
     then
       yes | ${AUTOPKG} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" update-trust-info $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
-      ${AUTOPKG} run --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
+      ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
-      ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
+      ${MANIFESTUTIL} -k repo_path="${MUNKIVERSESERVERREPODIR}" add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
-  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
-  ${AUTOPKG} run "MakeCatalogs.munki"
-# ${MAKECATALOGS} --repo_url=${MUNKIVERSESERVERREPODIR}
+#  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
+#  ${AUTOPKG} run "MakeCatalogs.munki"
+  ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
+${MAKECATALOGS} --repo_url=${MUNKIVERSESERVERREPODIR}
   # Manifest munkiverseserver ausführen
 
   # ServerTools installieren (mangedsoftwareupdate)
@@ -258,10 +263,7 @@ fn_installMunkiAdmin() {
 			exit 7 # Failed to install MunkiAdmin
 	fi
 }
-fn_startApache() {
-	# Start Apache WebServer
-	sudo apachectl start
-}
+
 
 # Create own Server-Manifest,
 
@@ -312,6 +314,7 @@ fn_installMunki # Installs complete munki
 echo "Create Init-Config"
 fn_configureMunki # Creates repo-folder and set paths
 fn_configureAutoPkg # Creates AutoPkg folders and set paths
+fn_configureMunkiverseserverRepo
 fn_startApache # Start Apache WebServer
 
 echo "Installing additional ServerTools and munkiverseserver-repo"
