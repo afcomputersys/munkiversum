@@ -232,20 +232,18 @@ fn_runInitServer() {
   MUNKIVERSESERVEROVERRIDES="$MUNKIVERSELOCATION/gitclones/munkiverse/init-server/overrides/*"
   for f in $MUNKIVERSESERVEROVERRIDES
   do
-echo ${f}
     if [[ "$f" == *"recipe"* ]]
     then
-echo ${f}"____if"
       yes | ${AUTOPKG} update-trust-info --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" $f
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
-      ${AUTOPKG} run -k repo_path="${MUNKIVERSESERVERREPODIR}" --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
+      ${AUTOPKG} run -k repo_path=${MUNKIVERSESERVERREPODIR} --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
       ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
 #  yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
 #  ${AUTOPKG} run "MakeCatalogs.munki"
-  ${MAKECATALOGS} --repo_url=file://${MUNKIVERSESERVERREPODIR}
+  ${MAKECATALOGS} --repo_url="file://${MUNKIVERSESERVERREPODIR}" ${MUNKIVERSESERVERREPODIR}
   ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
 
   ${DEFAULTS} write com.googlecode.munki.munkiimport repo_url "file://${REPODIR}" # TEMP
