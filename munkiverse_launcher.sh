@@ -14,6 +14,7 @@
 ### munkiverse-main.sh, das Unsterscripts periodisch ausführt
 ### A&F-Secure-Server zur Übermittlung sensibler Passwörter?
 ### Sicherheit. Alles möglichst verschlüsseln und https etc.
+### --> update-trust-info nich auf Client ausführen, sondern nur bei A&F
 ### GOGS "Free own GitHub Server"
 ###############################################################
 
@@ -38,6 +39,10 @@ MUNKEVERSESERVERREPONAME="repo_munkiverseserver"
 MUNKIVERSESERVERREPODIR="${MUNKIVERSELOCATION}/${MUNKEVERSESERVERREPONAME}"
 DEFAULTS="/usr/bin/defaults"
 AUTOPKG="/usr/local/bin/autopkg"
+MANIFESTUTIL="/usr/local/munki/manifestutil"
+MAKECATALOGS="/usr/local/munki/makecatalogs"
+MUNKIIMPORT="/usr/local/munki/munkiimport"
+
 
 # -------------------------------------------------------------
 # Make sure the whole script stops if Control-C is pressed.
@@ -191,8 +196,8 @@ fn_cloneGitMunkiverse() {
 fn_configureMunkiverseserverRepo() {
   # Creates repo-folder and subfolder with correct permissions
   if [[ -f "${MUNKIVERSESERVERREPODIR}" ]]; then
-      fn_log_error "Munki Repo already exists. Aborting."
-      exit 10 # Munki Repo already exists
+      fn_log_error "Munkiverseserver Repo already exists. Aborting."
+      exit 11 # Munkiverseserver Repo already exists
   else
       mkdir -p "${MUNKIVERSESERVERREPODIR}"
     	mkdir "${MUNKIVERSESERVERREPODIR}/catalogs"
@@ -205,22 +210,14 @@ fn_configureMunkiverseserverRepo() {
 	    sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents/
       fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}"
   fi
-  # Define paths and settings for munki
-  ${DEFAULTS} write com.googlecode.munki.munkiimport editor "Atom.app"
-  ${DEFAULTS} write com.googlecode.munki.munkiimport repo_path "${REPODIR}"
-  ${DEFAULTS} write com.googlecode.munki.munkiimport pkginfo_extension .plist
-  ${DEFAULTS} write com.googlecode.munki.munkiimport default_catalog new
-  # This makes AutoPkg useful on future runs for the admin user defined at the top. It copies & creates preferences for autopkg and munki into their home dir's Library folder, as well as transfers ownership for the ~/Library/AutoPkg folders to them.
-  plutil -convert xml1 ~/Library/Preferences/com.googlecode.munki.munkiimport.plist
-  fn_log_ok "munki configured"
 }
 fn_runInitServer() {
   # Install additional Server Tools from init-server/overrides (git)
   # Config SoftwareRepoURL of local munkiverseserver
   defaults write /Library/Preferences/ManagedInstalls SoftwareRepoURL "http://localhost/${REPONAME}"
   # Create munkiverseserver manifest
-  manifestutil new-manifest munkiverseserver
-  manifestutil add-catalog munkiverseserver --manifest munkiverseserver
+  ${MANIFESTUTIL} new-manifest munkiverseserver
+  ${MANIFESTUTIL} add-catalog munkiverseserver --manifest munkiverseserver
   # Execute Overrides and add to munkiverseserver manifest
   MUNKIVERSESERVEROVERRIDES="${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides/*"
   for f in "${MUNKIVERSESERVEROVERRIDES}"
@@ -231,11 +228,12 @@ fn_runInitServer() {
       RECIPEIDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :Identifier" $f)
       ${AUTOPKG} run --override-dir "${MUNKIVERSELOCATION}/gitclones/munkiverse/init-server/overrides" ${RECIPEIDENTIFIER}
       PKGNAME=$(/usr/libexec/PlistBuddy -c "Print :Input:NAME" $f)
-      manifestutil add-pkg ${PKGNAME} --manifest munkiverseserver
+      ${MANIFESTUTIL} add-pkg ${PKGNAME} --manifest munkiverseserver
     fi
   done
   yes | ${AUTOPKG} update-trust-info "MakeCatalogs.munki"
   ${AUTOPKG} run "MakeCatalogs.munki"
+# ${MAKECATALOGS} --repo_url=${MUNKIVERSESERVERREPODIR}
   # Manifest munkiverseserver ausführen
 
   # ServerTools installieren (mangedsoftwareupdate)
