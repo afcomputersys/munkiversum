@@ -212,7 +212,7 @@ fn_configureMunkiverseserverRepo() {
 fn_cloneGitMunkiverse() {
   # clone/pull munkiverse git
   if [[ -d "${MUNKIVERSELOCATION}/gitclones/munkiverse" ]]; then
-    git -C "${MUNKIVERSELOCATION}/gitclones" pull
+    git -C "${MUNKIVERSELOCATION}/gitclones/munkiverse" pull
     fn_log_ok "Git pull munkiverse."
   else
     mkdir -p "${MUNKIVERSELOCATION}/gitclones"
