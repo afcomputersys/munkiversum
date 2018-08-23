@@ -161,7 +161,7 @@ fn_configureAutoPkg() {
   if [[ -d "${MUNKIVERSELOCATION}/autopkg" ]]; then
     fn_log_ok "AutoPkg folders already exists."
   else
-    mkdir -p "${MUNKIVERSELOCATION}/autopkg/{RecipeRepos,RecipeOverrides,Cache}"
+    mkdir -p ${MUNKIVERSELOCATION}/autopkg/{RecipeRepos,RecipeOverrides,Cache}
     fn_log_ok "AutoPkg folders created in ${MUNKIVERSELOCATION}/autopkg"
     # Define paths for AutoPkg
     ${DEFAULTS} write com.github.autopkg MUNKI_REPO "$REPODIR"
@@ -177,7 +177,7 @@ fn_configureMunki() {
   if [[ -d "${REPODIR}" ]]; then
     fn_log_ok "Munki Repo already exists."
   else
-    mkdir -p "${REPODIR}/{catalogs,manifests,pkgs,pkgsinfo,icons,client_resources}"
+    mkdir -p ${REPODIR}/{catalogs,manifests,pkgs,pkgsinfo,icons,client_resources}
     chmod -R a+rX,g+w "${REPODIR}"
     chown -R $EUID:80 "${REPODIR}"
     sudo ln -s "${REPODIR}" /Library/WebServer/Documents/
@@ -194,17 +194,12 @@ fn_configureMunki() {
   fi
 
 }
-fn_cloneGitMunkiverse() {
-  # clone munkiverse git
-  mkdir -p "${MUNKIVERSELOCATION}/gitclones"
-  git -C "${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
-}
 fn_configureMunkiverseserverRepo() {
   # Creates repo-folder and subfolder with correct permissions
   if [[ -d "${MUNKIVERSESERVERREPODIR}" ]]; then
     fn_log_ok "Munkiverseserver Repo already exists."
   else
-    mkdir -p "${MUNKIVERSESERVERREPODIR}/{catalogs,manifests,pkgs,pkgsinfo,icons,client_resources}"
+    mkdir -p ${MUNKIVERSESERVERREPODIR}/{catalogs,manifests,pkgs,pkgsinfo,icons,client_resources}
     chmod -R a+rX,g+w "${MUNKIVERSESERVERREPODIR}"
     chown -R $EUID:80 "${MUNKIVERSESERVERREPODIR}"
     sudo ln -s "${MUNKIVERSESERVERREPODIR}" /Library/WebServer/Documents/
@@ -213,6 +208,11 @@ fn_configureMunkiverseserverRepo() {
     sudo defaults write /Library/Preferences/ManagedInstalls ClientIdentifier "munkiverseserver"
     fn_log_ok "munkiverseserver repo-folder created in ${MUNKIVERSESERVERREPODIR}. Configured managedinstalls."
   fi
+}
+fn_cloneGitMunkiverse() {
+  # clone munkiverse git
+  mkdir -p "${MUNKIVERSELOCATION}/gitclones"
+  git -C "${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
 }
 fn_startApache() {
 	# Start Apache WebServer
@@ -261,10 +261,6 @@ fn_runInitServer() {
   sudo ${MANAGEDSOFTWAREUPDATE} --installonly
 }
 
-
-
-
-
 # munkireport-php (über autopkg installieren? Munki & MunkiAdmin etc. auch? ServerinstallStart-RecipeList auf GitHub)
 # Watchman
 # Slack
@@ -289,9 +285,9 @@ fn_runInitServer() {
 # Execute functions and others
 # -------------------------------------------------------------
 
-echo "---------------------"
-echo "Launch to MUNKIVERSE"'!'
-echo "---------------------"
+echo "----------------------------"
+echo "--- Launch to MUNKIVERSE ---"
+echo "----------------------------"
 echo "*** Performing Tests ***"
 fn_versionCheck 13 # check macOS Version; at least 10.[$1]
 fn_rootCheck # Check that the script is NOT running as root
@@ -306,16 +302,16 @@ fn_installAutoPkg # Installs AutoPkg
 fn_installMunki # Installs complete munki
 
 echo "*** Create Init-Config ***"
-fn_configureMunki # Creates repo-folder and set paths
 fn_configureAutoPkg # Creates AutoPkg folders and set paths
-fn_cloneGitMunkiverse
-fn_configureMunkiverseserverRepo
+fn_configureMunki # Creates repo-folder and set paths
+fn_configureMunkiverseserverRepo # Creates repo_munkiverseserver folder, set paths and config ManagedInstalls
+fn_cloneGitMunkiverse # Clones munkiverse-GIT
 fn_startApache # Start Apache WebServer
 
-echo "Installing additional ServerTools and munkiverseserver-repo"
+echo "*** Installing additional ServerTools ***"
 fn_runInitServer
 
-echo "Configure munkiverse"
+# echo "Configure munkiverse"
 # Alle Konfigurationen
 
 echo "The launch to munkiverse had no problems. So go on - here are your essential Links and Login-Informations. Make a copy!"
@@ -323,6 +319,5 @@ echo "The launch to munkiverse had no problems. So go on - here are your essenti
 # Trello-login
 # ?Manifest-Creator-Login?
 # Ansprechspersonen A&F
-
 
 exit 0
