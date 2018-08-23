@@ -210,9 +210,15 @@ fn_configureMunkiverseserverRepo() {
   fi
 }
 fn_cloneGitMunkiverse() {
-  # clone munkiverse git
-  mkdir -p "${MUNKIVERSELOCATION}/gitclones"
-  git -C "${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
+  # clone/pull munkiverse git
+  if [[ -d "${MUNKIVERSELOCATION}/gitclones/munkiverse" ]]; then
+    git -C "${MUNKIVERSELOCATION}/gitclones" pull
+    fn_log_ok "Git pull munkiverse."
+  else
+    mkdir -p "${MUNKIVERSELOCATION}/gitclones"
+    git -C "${MUNKIVERSELOCATION}/gitclones" clone https://github.com/afcomputersys/munkiverse.git
+    fn_log_ok "Git clone munkiverse."
+  fi
 }
 fn_startApache() {
 	# Start Apache WebServer
