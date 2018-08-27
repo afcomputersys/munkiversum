@@ -20,7 +20,7 @@
 
 # andere Log-Variante
 #
-# log_file="/var/log/Munki_PostInstall.log"
+# log_file="/var/log/munkiverse.log"
 # exec >> $log_file 2>&1
 
 
@@ -47,8 +47,6 @@ MANAGEDSOFTWAREUPDATE="/usr/local/munki/managedsoftwareupdate"
 DEFAULTCATALOG="new"
 EDITOR="Atom.app"
 
-
-
 # -------------------------------------------------------------
 # Make sure the whole script stops if Control-C is pressed.
 # -------------------------------------------------------------
@@ -58,7 +56,6 @@ fn_terminate() {
     exit 1 # SIGINT caught
 }
 trap 'fn_terminate' SIGINT
-
 
 # -------------------------------------------------------------
 # Functions
