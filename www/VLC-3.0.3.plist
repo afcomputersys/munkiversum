@@ -17,9 +17,8 @@
 	<false/>
 	<key>catalogs</key>
 	<array>
-		<string>sdfgdsfg</string>
-		<string>production</string>
-	</array>
+				
+  <string>production</string></array>
 	<key>category</key>
 	<string>Utilities</string>
 	<key>description</key>
