@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>msh</string>
+		<key>creation_date</key>
+		<date>2018-07-03T09:02:40Z</date>
+		<key>munki_version</key>
+		<string>3.3.1.3537</string>
+		<key>os_version</key>
+		<string>10.10.5</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Office</string>
+	<key>description</key>
+	<string>BBEdit is the leading professional HTML and text editor for the Mac. Specifically crafted in response to the needs of Web authors and software developers, this award-winning product provides a plethora of features for editing, searching, and manipulation of text. BBEdit transforms text with high performance.</string>
+	<key>developer</key>
+	<string>Bare Bones Software</string>
+	<key>display_name</key>
+	<string>BBEdit</string>
+	<key>installer_item_hash</key>
+	<string>92a23607b4c22c4eab050592c4f0fd243c489690180e8fabaf11c30854ac9aec</string>
+	<key>installer_item_location</key>
+	<string>apps/barebonessoftware/BBEdit-12.1.4.dmg</string>
+	<key>installer_item_size</key>
+	<integer>14311</integer>
+	<key>installer_type</key>
+	<string>copy_from_dmg</string>
+	<key>installs</key>
+	<array>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.barebones.bbedit</string>
+			<key>CFBundleName</key>
+			<string>BBEdit</string>
+			<key>CFBundleShortVersionString</key>
+			<string>12.1.4</string>
+			<key>CFBundleVersion</key>
+			<string>410080</string>
+			<key>minosversion</key>
+			<string>10.11.6</string>
+			<key>path</key>
+			<string>/Applications/BBEdit.app</string>
+			<key>type</key>
+			<string>application</string>
+			<key>version_comparison_key</key>
+			<string>CFBundleShortVersionString</string>
+		</dict>
+	</array>
+	<key>items_to_copy</key>
+	<array>
+		<dict>
+			<key>destination_path</key>
+			<string>/Applications</string>
+			<key>source_item</key>
+			<string>BBEdit.app</string>
+		</dict>
+	</array>
+	<key>minimum_os_version</key>
+	<string>10.11.6</string>
+	<key>name</key>
+	<string>BBEdit</string>
+	<key>notes</key>
+	<string>AutoPkgr</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+# Copy command-line tool resources out of .app bundle
+CMD_TOOL_DIR=/usr/local/bin
+CMD_MAN_DIR=/usr/local/share/man/man1
+HELPER_BIN_SRC_DIR=/Applications/BBEdit.app/Contents/Helpers
+HELPER_MAN_SRC_DIR=/Applications/BBEdit.app/Contents/Resources
+LN=/bin/ln
+
+# create dirs if they don't already exist
+for DIR in "$CMD_TOOL_DIR" "$CMD_MAN_DIR"; do
+    [ -d "$DIR" ] || mkdir -p -m 775 "$DIR"
+done
+# make symlinks to binaries and manpages
+for TOOL in bbdiff bbfind bbresults; do
+    "$LN" -sf "$HELPER_BIN_SRC_DIR/$TOOL" "$CMD_TOOL_DIR/$TOOL"
+    "$LN" -sf "$HELPER_MAN_SRC_DIR/$TOOL.1" "$CMD_MAN_DIR/$TOOL.1"
+done
+"$LN" -sf "$HELPER_BIN_SRC_DIR/bbedit_tool" "$CMD_TOOL_DIR/bbedit"
+"$LN" -sf "$HELPER_MAN_SRC_DIR/bbedit.1" "$CMD_MAN_DIR/bbedit.1"
+            </string>
+	<key>unattended_install</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>remove_copied_items</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>version</key>
+	<string>12.1.4</string>
+</dict>
+</plist>

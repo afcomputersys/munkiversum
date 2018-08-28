@@ -7,7 +7,7 @@
 		<key>created_by</key>
 		<string>msh</string>
 		<key>creation_date</key>
-		<date>2018-07-03T08:54:00Z</date>
+		<date>2018-07-03T09:03:21Z</date>
 		<key>munki_version</key>
 		<string>3.3.1.3537</string>
 		<key>os_version</key>
@@ -17,39 +17,39 @@
 	<false/>
 	<key>catalogs</key>
 	<array>
-				
-  <string>testing</string><string>production</string></array>
+		
+	<string>testing</string><string>production</string></array>
 	<key>category</key>
-	<string>Utilities</string>
+	<string>Internet</string>
 	<key>description</key>
-	<string>VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVD, Audio CD, VCD, and various streaming protocols.</string>
+	<string>With an easy to use interface, connect to FTP, SFTP, WebDAV, Amazon S3, Google Storage, Windows Azure, Rackspace Cloud Files and even Google Docs.</string>
 	<key>developer</key>
-	<string>VideoLAN</string>
+	<string>David V. Kocher</string>
 	<key>display_name</key>
-	<string>VLC Media Player</string>
+	<string>Cyberduck</string>
 	<key>installer_item_hash</key>
-	<string>140990d6ece0f60a10701bdb87aa86cc17a51d2dd875fbd63d84fe40cca17c11</string>
+	<string>8fea313894d5c9a852b330245571835ab2877facfb2c2cde37a9a97d7068f1b0</string>
 	<key>installer_item_location</key>
-	<string>apps/videolan/VLC-3.0.3.dmg</string>
+	<string>apps/davidkocher/Cyberduck-6.6.2.dmg</string>
 	<key>installer_item_size</key>
-	<integer>46810</integer>
+	<integer>99001</integer>
 	<key>installer_type</key>
 	<string>copy_from_dmg</string>
 	<key>installs</key>
 	<array>
 		<dict>
 			<key>CFBundleIdentifier</key>
-			<string>org.videolan.vlc</string>
+			<string>ch.sudo.cyberduck</string>
 			<key>CFBundleName</key>
-			<string>VLC media player</string>
+			<string>Cyberduck</string>
 			<key>CFBundleShortVersionString</key>
-			<string>3.0.3</string>
+			<string>6.6.2</string>
 			<key>CFBundleVersion</key>
-			<string>3.0.3</string>
+			<string>28219</string>
 			<key>minosversion</key>
-			<string>10.7.0</string>
+			<string>10.7.3</string>
 			<key>path</key>
-			<string>/Applications/VLC.app</string>
+			<string>/Applications/Cyberduck.app</string>
 			<key>type</key>
 			<string>application</string>
 			<key>version_comparison_key</key>
@@ -62,19 +62,15 @@
 			<key>destination_path</key>
 			<string>/Applications</string>
 			<key>source_item</key>
-			<string>VLC.app</string>
+			<string>Cyberduck.app</string>
 		</dict>
 	</array>
 	<key>minimum_os_version</key>
-	<string>10.7.0</string>
+	<string>10.7.3</string>
 	<key>name</key>
-	<string>VLC</string>
+	<string>Cyberduck</string>
 	<key>notes</key>
 	<string>AutoPkgr</string>
-	<key>supported_architectures</key>
-	<array>
-		<string>x86_64</string>
-	</array>
 	<key>unattended_install</key>
 	<true/>
 	<key>uninstall_method</key>
@@ -82,6 +78,6 @@
 	<key>uninstallable</key>
 	<true/>
 	<key>version</key>
-	<string>3.0.3</string>
+	<string>6.6.2</string>
 </dict>
 </plist>

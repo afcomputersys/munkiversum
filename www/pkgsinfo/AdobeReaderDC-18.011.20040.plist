@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>msh</string>
+		<key>creation_date</key>
+		<date>2018-07-03T09:01:49Z</date>
+		<key>munki_version</key>
+		<string>3.3.1.3537</string>
+		<key>os_version</key>
+		<string>10.10.5</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>blocking_applications</key>
+	<array>
+		<string>Adobe Reader.app</string>
+		<string>Adobe Acrobat Reader DC.app</string>
+		<string>Adobe Acrobat Pro.app</string>
+	</array>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Office</string>
+	<key>description</key>
+	<string>More powerful than other PDF software, Adobe Acrobat Reader DC is the free, trusted standard for viewing, printing, and annotating PDFs. And now, it’s connected to Adobe Document Cloud — so it’s easier than ever to work with PDFs on computers and mobile devices.</string>
+	<key>developer</key>
+	<string>Adobe</string>
+	<key>display_name</key>
+	<string>Adobe Acrobat Reader DC</string>
+	<key>installed_size</key>
+	<integer>219892</integer>
+	<key>installer_item_hash</key>
+	<string>a81034bbfbafd9ad9b7c71c971eb7c5188aae5f7faa707141f1d83a1edacf014</string>
+	<key>installer_item_location</key>
+	<string>apps/adobe/AdobeReaderDC-18.011.20040.dmg</string>
+	<key>installer_item_size</key>
+	<integer>171011</integer>
+	<key>installs</key>
+	<array>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string>com.adobe.Reader</string>
+			<key>CFBundleName</key>
+			<string>Acrobat Reader</string>
+			<key>CFBundleShortVersionString</key>
+			<string>18.011.20040</string>
+			<key>CFBundleVersion</key>
+			<string>18.011.20040</string>
+			<key>minosversion</key>
+			<string>10 . 4 . 3</string>
+			<key>path</key>
+			<string>/Applications/Adobe Acrobat Reader DC.app</string>
+			<key>type</key>
+			<string>application</string>
+			<key>version_comparison_key</key>
+			<string>CFBundleShortVersionString</string>
+		</dict>
+	</array>
+	<key>minimum_os_version</key>
+	<string>10.10.0</string>
+	<key>name</key>
+	<string>AdobeReaderDC</string>
+	<key>notes</key>
+	<string>AutoPkgr</string>
+	<key>preinstall_script</key>
+	<string>#!/bin/sh
+if [ -e "/Applications/Adobe Acrobat Reader DC.app" ]; then
+rm -r "/Applications/Adobe Acrobat Reader DC.app"
+fi
+exit 0
+            </string>
+	<key>receipts</key>
+	<array>
+		<dict>
+			<key>installed_size</key>
+			<integer>131161</integer>
+			<key>packageid</key>
+			<string>com.adobe.acrobat.DC.reader.app.pkg.MUI</string>
+			<key>version</key>
+			<string>18.011.20040</string>
+		</dict>
+		<dict>
+			<key>installed_size</key>
+			<integer>1214</integer>
+			<key>packageid</key>
+			<string>com.adobe.armdc.app.pkg</string>
+			<key>version</key>
+			<string>1.0.0</string>
+		</dict>
+		<dict>
+			<key>installed_size</key>
+			<integer>851</integer>
+			<key>packageid</key>
+			<string>com.adobe.acrobat.DC.reader.browser.pkg.MUI</string>
+			<key>version</key>
+			<string>18.011.20040</string>
+		</dict>
+		<dict>
+			<key>installed_size</key>
+			<integer>19343</integer>
+			<key>packageid</key>
+			<string>com.adobe.RdrServicesUpdater</string>
+			<key>version</key>
+			<string>0</string>
+		</dict>
+		<dict>
+			<key>installed_size</key>
+			<integer>67323</integer>
+			<key>packageid</key>
+			<string>com.adobe.acrobat.DC.reader.appsupport.pkg.MUI</string>
+			<key>version</key>
+			<string>18.011.20040</string>
+		</dict>
+	</array>
+	<key>unattended_install</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>removepackages</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>version</key>
+	<string>18.011.20040</string>
+</dict>
+</plist>

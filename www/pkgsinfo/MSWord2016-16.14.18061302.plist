@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>msh</string>
+		<key>creation_date</key>
+		<date>2018-07-03T08:55:14Z</date>
+		<key>munki_version</key>
+		<string>3.3.1.3537</string>
+		<key>os_version</key>
+		<string>10.10.5</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>blocking_applications</key>
+	<array>
+		<string>Microsoft Word</string>
+		<string>Microsoft Error Reporting</string>
+		<string>Microsoft AutoUpdate</string>
+	</array>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+	</array>
+	<key>category</key>
+	<string>Office</string>
+	<key>description</key>
+	<string>&lt;html&gt;&lt;p style="font-family:Helvetica;font-size:12px"&gt;For detailed information about this update, please visit the following Web site: &lt;/p&gt;
+
+&lt;p style="font-family:Helvetica;font-size:12px"&gt;&lt;a href="https://go.microsoft.com/fwlink/?LinkID=831049" target="_blank"&gt;https://go.microsoft.com/fwlink/?LinkID=831049&lt;/a&gt;&lt;/p&gt;&lt;/html&gt;</string>
+	<key>developer</key>
+	<string>Microsoft</string>
+	<key>display_name</key>
+	<string>Microsoft Word for Mac</string>
+	<key>installed_size</key>
+	<integer>2155505</integer>
+	<key>installer_item_hash</key>
+	<string>0586d56ff7eb505eee661e8f19d2d9c8bd7a281fbe1e158e25c3be93f3f7f5e8</string>
+	<key>installer_item_location</key>
+	<string>apps/microsoft/MSWord2016-16.14.18061302.pkg</string>
+	<key>installer_item_size</key>
+	<integer>1101511</integer>
+	<key>installs</key>
+	<array>
+		<dict>
+			<key>CFBundleVersion</key>
+			<string>16.14.18061302</string>
+			<key>path</key>
+			<string>/Applications/Microsoft Word.app</string>
+			<key>type</key>
+			<string>application</string>
+			<key>version_comparison_key</key>
+			<string>CFBundleVersion</string>
+		</dict>
+	</array>
+	<key>minimum_os_version</key>
+	<string>10.10.0</string>
+	<key>name</key>
+	<string>MSWord2016</string>
+	<key>notes</key>
+	<string>AutoPkgr</string>
+	<key>receipts</key>
+	<array>
+		<dict>
+			<key>installed_size</key>
+			<integer>2155505</integer>
+			<key>packageid</key>
+			<string>com.microsoft.package.Microsoft_Word.app</string>
+			<key>version</key>
+			<string>16.14.18061302</string>
+		</dict>
+	</array>
+	<key>unattended_install</key>
+	<true/>
+	<key>uninstall_method</key>
+	<string>removepackages</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>version</key>
+	<string>16.14.18061302</string>
+</dict>
+</plist>
