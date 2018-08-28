@@ -17,8 +17,8 @@
 	<false/>
 	<key>catalogs</key>
 	<array>
-		<string>testing</string>
-	</array>
+		
+	<string>new</string><string>testing</string><string>production</string></array>
 	<key>category</key>
 	<string>Office</string>
 	<key>description</key>
