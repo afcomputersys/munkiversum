@@ -18,7 +18,7 @@
 	<key>catalogs</key>
 	<array>
 		
-	<string>new</string><string>production</string></array>
+	<string>new</string><string>testing</string></array>
 	<key>category</key>
 	<string>Internet</string>
 	<key>description</key>

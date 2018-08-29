@@ -16,6 +16,7 @@
 ### Sicherheit. Alles möglichst verschlüsseln und https etc.
 ### --> update-trust-info nich auf Client ausführen, sondern nur bei A&F
 ### GOGS "Free own GitHub Server"
+### planet-push-Authentifizierung per DeployKey
 ###############################################################
 
 # andere Log-Variante
