@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.BBEdit</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>BBEdit</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>new</string>
+			</array>
+			<key>description</key>
+			<string>BBEdit wird als „mächtiger Editor“ „mit vielen durchdachten und nützlichen Funktionen“ beschrieben. Die Zeitschrift c’t hebt 1997 hervor, dass „kaum ein anderes Programm eine so gelungene und mächtige Suchen-und-Ersetzen-Funktion bieten kann“. Das „populäre“ „Flaggschiff unter den Mac-Editoren“ sei „einer der besten HTML-Editoren“. Mac-Magazine wie Macworld widmen der Software regelmäßig ausführliche Rezensionen.&lt;br&gt;&lt;br&gt;
+					&lt;img src="https://www.barebones.com/images/bbedit/screenshot-main.png"&gt;</string>
+			<key>display_name</key>
+			<string>BBEdit</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>postinstall_script</key>
+			<string>#!/bin/sh
+# Copy command-line tool resources out of .app bundle
+CMD_TOOL_DIR=/usr/local/bin
+CMD_MAN_DIR=/usr/local/share/man/man1
+HELPER_BIN_SRC_DIR=/Applications/BBEdit.app/Contents/Helpers
+HELPER_MAN_SRC_DIR=/Applications/BBEdit.app/Contents/Resources
+LN=/bin/ln
+
+# create dirs if they don't already exist
+for DIR in "$CMD_TOOL_DIR" "$CMD_MAN_DIR"; do
+    [ -d "$DIR" ] || mkdir -p -m 775 "$DIR"
+done
+# make symlinks to binaries and manpages
+for TOOL in bbdiff bbfind bbresults; do
+    "$LN" -sf "$HELPER_BIN_SRC_DIR/$TOOL" "$CMD_TOOL_DIR/$TOOL"
+    "$LN" -sf "$HELPER_MAN_SRC_DIR/$TOOL.1" "$CMD_MAN_DIR/$TOOL.1"
+done
+"$LN" -sf "$HELPER_BIN_SRC_DIR/bbedit_tool" "$CMD_TOOL_DIR/bbedit"
+"$LN" -sf "$HELPER_MAN_SRC_DIR/bbedit.1" "$CMD_MAN_DIR/bbedit.1"
+            </string>
+			<key>unattended_install</key>
+			<true/>
+			<key>uninstallable</key>
+			<true/>
+			<key>unattended_uninstall</key>
+			<true/>
+			<key>icon_name</key>
+			<string>bbedit.png</string>
+			<key>minosversion</key>
+			<string>10.11.6</string>
+			<key>path</key>
+			<string>/Applications/BBEdit.app</string>
+			<key>type</key>
+			<string>application</string>
+			<key>version_comparison_key</key>
+			<string>CFBundleShortVersionString</string>
+			<key>category</key>
+			<string>Tools</string>
+			<key>developer</key>
+			<string>Bare Bones Software</string>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.munki.bbedit</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict>
+			<key>BarebonesURLProvider</key>
+			<dict>
+				<key>git_hash</key>
+				<string>c4a6bacbba3a00ff24f0914efcd9159eb26999ba</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Barebones/BarebonesURLProvider.py</string>
+				<key>sha256_hash</key>
+				<string>f23c5f4769d3be3f29d1e573867275ae63e38c23e56b39250478c3159927a33f</string>
+			</dict>
+		</dict>
+		<key>parent_recipes</key>
+		<dict>
+			<key>com.github.autopkg.download.bbedit</key>
+			<dict>
+				<key>git_hash</key>
+				<string>937886757bbb1981b1179263f2aed613fea1d53d</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Barebones/BBEdit.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>8e691f6f1fd0833d602749c7bcd73566b21212773f7f6b5b369c7f08630822c4</string>
+			</dict>
+			<key>com.github.autopkg.munki.bbedit</key>
+			<dict>
+				<key>git_hash</key>
+				<string>53a4d0735151a6260a82da8583a8e7284445f9d9</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.recipes/Barebones/BBEdit.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>cb7d397832f1543df75a4faf2fb6565a74a9d11870a259984fc9bd3ca9aafee6</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
