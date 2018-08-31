@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>local.munki.TeamViewer</string>
+	<key>Input</key>
+	<dict>
+		<key>DOWNLOAD_URL</key>
+		<string>https://download.teamviewer.com/download/TeamViewer.dmg</string>
+		<key>MUNKI_CATEGORY</key>
+		<string>Remote</string>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>TeamViewer</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>munkiverseserver</string>
+			</array>
+			<key>category</key>
+			<string>%MUNKI_CATEGORY%</string>
+			<key>description</key>
+			<string>Lassen Sie eingehende Verbindungen zu, um Support zu empfangen oder greifen Sie auf entfernte Computer zu, um Hilfe zu leisten. Nehmen Sie an Meetings und Präsentationen teil, versenden Sie Chat-Nachrichten an Personen oder Gruppen oder starten Sie Video-Anrufe. Nachdem Sie TeamViewer heruntergeladen und installiert haben, bauen Sie Ihre erste Verbindung in nur wenigen Sekunden auf.&lt;br&gt;&lt;br&gt;
+					&lt;img width="400" src="https://tv-static.net/c3613269c72c44b18f3c68b43fc13018/resources/images/download/mac.png"&gt;</string>
+			<key>developer</key>
+			<string>TeamViewer GmbH</string>
+			<key>display_name</key>
+			<string>TeamViewer</string>
+			<key>minimum_os_version</key>
+			<string>10.6</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+			<key>unattended_uninstall</key>
+			<true/>
+			<key>uninstallable</key>
+			<true/>
+			<key>icon_name</key>
+			<string>teamviewer.png</string>
+			<key>RestartAction</key>
+			<string>None</string>
+		</dict>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>io.github.hjuutilainen.munki.TeamViewer</string>
+	<key>ParentRecipeTrustInfo</key>
+	<dict>
+		<key>non_core_processors</key>
+		<dict/>
+		<key>parent_recipes</key>
+		<dict>
+			<key>io.github.hjuutilainen.download.TeamViewer</key>
+			<dict>
+				<key>git_hash</key>
+				<string>45d9a591c62e730a305afd7ce0d0e05bc6938e65</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.hjuutilainen-recipes/TeamViewer/TeamViewer.download.recipe</string>
+				<key>sha256_hash</key>
+				<string>e289e3bfed3537e63044e3de17e33321f65899babf999c0ca67fbb8780e5a82d</string>
+			</dict>
+			<key>io.github.hjuutilainen.munki.TeamViewer</key>
+			<dict>
+				<key>git_hash</key>
+				<string>b19087c24635b28b78ca85bc353990b9f2381d09</string>
+				<key>path</key>
+				<string>~/Library/AutoPkg/RecipeRepos/com.github.autopkg.hjuutilainen-recipes/TeamViewer/TeamViewer.munki.recipe</string>
+				<key>sha256_hash</key>
+				<string>58aef79425afe07abd1ef6ae347c4343367c16e67ab9d52ef5c17b1ef4394361</string>
+			</dict>
+		</dict>
+	</dict>
+</dict>
+</plist>
